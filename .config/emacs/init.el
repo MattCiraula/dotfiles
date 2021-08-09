@@ -48,6 +48,9 @@
 ;; use pixels rather than line height when resizing frame
 (setq frame-resize-pixelwise t)
 
+;; follow version controlled symlinks without asking
+(setq vc-follow-symlinks t)
+
 ;; diminish allows hiding modes in the modeline
 (use-package diminish)
 

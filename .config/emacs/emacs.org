@@ -63,6 +63,9 @@ Checkout abo-abo/avy for quick scope style motion
   ;; use pixels rather than line height when resizing frame
   (setq frame-resize-pixelwise t)
 
+  ;; follow version controlled symlinks without asking
+  (setq vc-follow-symlinks t)
+
 #+end_src
 
 ** Modeline Config
