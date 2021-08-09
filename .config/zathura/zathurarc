@@ -1,0 +1,7 @@
+set selection-clipboard clipboard
+#set recolor true
+set recolor-darkcolor  "#FFFFFF"
+set recolor-lightcolor "#000000"
+map i recolor
+map J scroll half-down
+map K scroll half-up

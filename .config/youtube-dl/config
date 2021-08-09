@@ -1,0 +1,2 @@
+# always put files in ~/videos
+--output ~/videos/%(title)s.%(ext)s
