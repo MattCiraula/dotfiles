@@ -31,7 +31,8 @@
 	;;     :classpath-overrides - map of lib to path that overrides the result of resolving deps
 
   :aliases {
-    :deps {:extra-deps {org.clojure/tools.deps.alpha {:mvn/version "0.11.922"}}}
+    ;; clojure -X:deps find-versions doesn't work unless this is commented...
+    ;;:deps {:extra-deps {org.clojure/tools.deps.alpha {:mvn/version "0.11.922"}}}
     ;:test {:extra-paths ["test"]}
 
     :fmt {:extra-deps {com.jameslaverack/cljfmt-runner
