@@ -1,2 +1,6 @@
-[core]
-  sshCommand = ssh -i ~/.ssh/id_rsa
+[user]
+	name = Matthew Ciraula
+	email = ciraulam@tutanota.com
+	signingkey = 15F4A6A52373C4FE8E7F150C7934EA8C605218FF
+[commit]
+	gpgsign = true
