@@ -173,6 +173,14 @@ Checkout abo-abo/avy for quick scope style motion
 
 #+end_src
 
+** FZF
+#+begin_src emacs-lisp
+
+  (use-package fzf
+    :ensure t)
+
+#+end_src
+
 ** Helpful
 #+begin_src emacs-lisp
 
@@ -259,8 +267,6 @@ Checkout abo-abo/avy for quick scope style motion
       "dc"  'dired-config
       "dd"  'dired
       "dh"  'dired-home
-      ;"dh"  (lambda nil (interactive)
-      ;        (dired (getenv "HOME")))
       "dj"  'dired-jump
       "do"  'dired-jump-other-window
       "dp"  'dired-projects
@@ -289,10 +295,24 @@ Checkout abo-abo/avy for quick scope style motion
 
       "o"   '(:ignore t :which-key "open")
       "oc"  '(open-org-config :which-key "open emacs config")
+      "oe"  'eshell
+      "oo"  '(:ignore t :which-key "open in other window")
+      ;; TODO: implement open in other window keys
 
-      ;"p"   '(:keymap projectile-command-map :package projectile)
-      ;"p"   'projectile-command-map TODO: fix this
-
+      "p"   '(:ignore t :which-key "projectile")
+      "pd"  'projectile-dired
+      "pe"  'projectile-run-eshell
+      "pg"  'projectile-ripgrep
+      "pk"  'projectile-kill-buffers
+      "pn"  'projectile-next-project-buffer
+      "po"  '(:ignore t :which-key "projectile other window")
+      "pod" 'projectile-dired-other-window
+      "pof" 'projectile-find-file-other-window
+      "pp"  'projectile-previous-project-buffer
+      "pr"  'projectile-run-project
+      "ps"  'projectile-switch-project
+      "pt"  'projectile-test-project
+      "pz"  'fzf-projectile
 
       "w"   '(:ignore t :which-key "windows")
       "wc"  'evil-window-delete
@@ -309,10 +329,9 @@ Checkout abo-abo/avy for quick scope style motion
       "z"   '(hydra/text-zoom/body :which-key "zoom text")
       ";"   '(eval-config :which-key "eval config")))
 
-  (matt/leader-keys :keymaps 'projectile-keymap)
 
   ; helper functions
-                                          ; TODO: decide if I should use lambdas or helper functions
+  ; TODO: decide if I should use lambdas or helper functions
   (defun counsel-fzf-config-files ()
     (interactive)
     (counsel-fzf nil (getenv "XDG_CONFIG_HOME")))

@@ -119,6 +119,9 @@
           :map minibuffer-local-map
           ("C-r" . 'counsel-minibuffer-history)))
 
+(use-package fzf
+  :ensure t)
+
 (use-package helpful
   :custom
   (counsel-describe-function-function #'helpful-callable)
@@ -183,8 +186,6 @@
     "dc"  'dired-config
     "dd"  'dired
     "dh"  'dired-home
-    ;"dh"  (lambda nil (interactive)
-    ;        (dired (getenv "HOME")))
     "dj"  'dired-jump
     "do"  'dired-jump-other-window
     "dp"  'dired-projects
@@ -213,10 +214,24 @@
 
     "o"   '(:ignore t :which-key "open")
     "oc"  '(open-org-config :which-key "open emacs config")
+    "oe"  'eshell
+    "oo"  '(:ignore t :which-key "open in other window")
+    ;; TODO: implement open in other window keys
 
-    ;"p"   '(:keymap projectile-command-map :package projectile)
-    ;"p"   'projectile-command-map TODO: fix this
-
+    "p"   '(:ignore t :which-key "projectile")
+    "pd"  'projectile-dired
+    "pe"  'projectile-run-eshell
+    "pg"  'projectile-ripgrep
+    "pk"  'projectile-kill-buffers
+    "pn"  'projectile-next-project-buffer
+    "po"  '(:ignore t :which-key "projectile other window")
+    "pod" 'projectile-dired-other-window
+    "pof" 'projectile-find-file-other-window
+    "pp"  'projectile-previous-project-buffer
+    "pr"  'projectile-run-project
+    "ps"  'projectile-switch-project
+    "pt"  'projectile-test-project
+    "pz"  'fzf-projectile
 
     "w"   '(:ignore t :which-key "windows")
     "wc"  'evil-window-delete
@@ -233,10 +248,9 @@
     "z"   '(hydra/text-zoom/body :which-key "zoom text")
     ";"   '(eval-config :which-key "eval config")))
 
-(matt/leader-keys :keymaps 'projectile-keymap)
 
 ; helper functions
-                                        ; TODO: decide if I should use lambdas or helper functions
+; TODO: decide if I should use lambdas or helper functions
 (defun counsel-fzf-config-files ()
   (interactive)
   (counsel-fzf nil (getenv "XDG_CONFIG_HOME")))
