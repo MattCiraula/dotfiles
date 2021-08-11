@@ -252,7 +252,8 @@ Checkout abo-abo/avy for quick scope style motion
       "bn"  'next-buffer
       "bp"  'previous-buffer
       "br"  'revert-buffer-noauto
-      "bs"  'counsel-ibuffer
+      "bs"  'counsel-switch-buffer
+      "bS"  'counsel-switch-buffer-other-window
       "bx"  'kill-this-buffer
 
       "d"   '(:ignore t :which-key "dired")
