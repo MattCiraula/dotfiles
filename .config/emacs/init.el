@@ -119,9 +119,6 @@
           :map minibuffer-local-map
           ("C-r" . 'counsel-minibuffer-history)))
 
-(use-package fzf
-  :ensure t)
-
 (use-package helpful
   :custom
   (counsel-describe-function-function #'helpful-callable)
@@ -179,7 +176,8 @@
     "bn"  'next-buffer
     "bp"  'previous-buffer
     "br"  'revert-buffer-noauto
-    "bs"  'counsel-ibuffer
+    "bs"  'counsel-switch-buffer
+    "bS"  'counsel-switch-buffer-other-window
     "bx"  'kill-this-buffer
 
     "d"   '(:ignore t :which-key "dired")
@@ -187,12 +185,13 @@
     "dd"  'dired
     "dh"  'dired-home
     "dj"  'dired-jump
-    "do"  'dired-jump-other-window
+    "dJ"  'dired-jump-other-window
     "dp"  'dired-projects
 
     "f"   '(:ignore t :which-key "find")
     "fc"  '(counsel-fzf-config-files :which-key "fzf config dir")
     "ff"  'find-file
+    "fF"  'find-file-other-window
     "fg"  '(counsel-rg :which-key "grep")
     "fz"  'counsel-fzf
 
@@ -220,18 +219,17 @@
 
     "p"   '(:ignore t :which-key "projectile")
     "pd"  'projectile-dired
+    "pD"  'projectile-dired-other-window
     "pe"  'projectile-run-eshell
+    "pf"  'projectile-find-file
+    "pF"  'projectile-find-file-other-window
     "pg"  'projectile-ripgrep
     "pk"  'projectile-kill-buffers
     "pn"  'projectile-next-project-buffer
-    "po"  '(:ignore t :which-key "projectile other window")
-    "pod" 'projectile-dired-other-window
-    "pof" 'projectile-find-file-other-window
     "pp"  'projectile-previous-project-buffer
     "pr"  'projectile-run-project
     "ps"  'projectile-switch-project
     "pt"  'projectile-test-project
-    "pz"  'fzf-projectile
 
     "w"   '(:ignore t :which-key "windows")
     "wc"  'evil-window-delete
