@@ -1,0 +1,284 @@
+[colors]
+background = #111111
+focused-bg = #d78821
+focused-fg = #000000
+occupied-bg = #666666
+foreground = #dddddd
+
+[settings]
+format-foreground = #dddddd
+format-background = #111111
+format-margin = 0
+screenchange-reload = true
+
+[global/wm]
+margin-top = 0
+margin-bottom = 0
+
+[bar/bar]
+monitor = ${env:MONITOR:eDP}
+monitor-fallback =
+monitor-strict = false
+monitor-exact = true
+override-redirect = false
+wm-restack = dwm
+enable-ipc = true
+fixed-center = false
+bottom = false
+
+width = 99.2%
+height = 32
+offset-x = 5
+offset-y = 5
+radius-top = 6.0
+
+underline-size = 3
+overline-size = 0
+
+
+font-0 = SourceCodePro:pixelsize=12;
+font-1 = Symbola:pixelsize=14;
+
+modules-left = dwm
+modules-right = packages cpu ram sound battery date
+
+tray-position = right
+tray-offset-x = 0
+tray-offset-y = 0
+tray-scale = 1.0
+
+cursor-click = pointer
+cursor-scroll = default
+
+[module/xwindow]
+type = internal/xwindow
+label = %title%
+format-background = #111111
+format-padding = 1
+
+[module/dwm]
+type = internal/dwm
+;format = <label-tags> <label-layout> <label-floating> <label-title>
+; Path to dwm socket (default: /tmp/dwm.sock)
+socket-path = /tmp/dwm.sock
+
+; Left-click to view tag, right-click to toggle tag view
+enable-tags-click = false
+; Scroll to cycle between available tags
+enable-tags-scroll = false
+; If true and enable-tags-scroll = true, scrolling will view all tags regardless if occupied
+tags-scroll-empty = false
+; If true and enable-tags-scroll = true, scrolling will cycle through tags backwards
+tags-scroll-reverse = false
+; If true and enable-tags-scroll = true, wrap active tag when scrolling
+tags-scroll-wrap = false
+; Left-click to set secondary layout, right-click to switch to previous layout
+enable-layout-click = false
+; Scroll to cycle between available layouts
+enable-layout-scroll = false
+; Wrap when scrolling and reaching begining/end of layouts
+layout-scroll-wrap = false
+; Reverse scroll direction
+layout-scroll-reverse = false
+
+; If enable-layout-click = true, clicking the layout symbol will switch to this layout
+secondary-layout-symbol = [M]
+
+; Separator in between shown tags
+; label-separator = |
+
+; Title of currently focused window
+; Available tokens:
+;   %title%
+label-title = %title%
+label-title-padding = 2
+label-title-forefround = #222222
+label-title-maxlen = 30
+
+; Symbol of current layout
+; Available tokens:
+;   %symbol%
+label-layout = %symbol%
+label-layout-padding = 2
+label-layout-foreground = #000
+label-layout-background = #222222
+
+; Text to show when currently focused window is floating
+label-floating = F
+
+; States: focused, unfocused, visible, urgent, empty
+; Available tokens:
+;   %name%
+
+; focused = Selected tag on focused monitor
+label-focused = %name%
+label-focused-background = #d78821
+label-focused-foreground = #000000
+label-focused-underline = #d65d0e
+label-focused-padding = 1
+
+
+; unfocused = Unselected tag on unselected monitor
+label-unfocused = %name%
+label-unfocused-padding = 2
+
+; visible = Unselected tag, but occupied tag on any monitor
+label-visible = %name%
+label-visible-padding = 1
+label-visible-background = #222222
+label-visible-underline = #d65d0e
+
+; urgent = Unselected tag with window that has urgency hint set
+label-urgent = %name%
+label-urgent-background = #222222
+label-urgent-padding = 2
+
+; empty = Unselected and unoccupied tag
+; This can be set to an empty string to hide empty tags
+label-empty = %name%
+label-empty-padding = 1
+label-empty-background = #111111
+label-empty-underline = #076678
+
+
+[module/bspwm]
+type = internal/bspwm
+enable-scroll = true
+label-focused = %name%
+label-focused-background = #d78821
+label-focused-foreground = #000000
+label-focused-underline = #d65d0e
+label-focused-padding = 1
+
+label-occupied = %name%
+label-occupied-padding = 1
+label-occupied-background = #222222
+label-occupied-underline = #d65d0e
+
+label-empty = %name%
+label-empty-padding = 1
+label-empty-background = #111111
+label-empty-underline = #076678
+
+[module/date]
+type = custom/script
+#exec = $XDG_CONFIG_HOME/polybar/date.sh
+exec = date +"%a %b %d 📅 | %H:%M"
+interval = 5
+label = " %output% "
+
+[module/battery]
+type = custom/script
+exec = "acpi | cut -d "," -f 2"
+interval = 10
+label = "%output% 🧨 |"
+
+[module/sound]
+type = custom/script
+exec = "pamixer --get-volume-human"
+interval = 10
+label = " %output% 🔊 |"
+
+[module/ram]
+type = custom/script
+exec = "free -h | awk 'FNR==2{print$3}'"
+interval = 3
+label = " %output% 🐏 |"
+
+[module/cpu]
+type = custom/script
+exec = "top -bn1 | awk 'FNR==3{print 100-$8"%"}'"
+interval = 3
+label = " %output% ⛧ |"
+
+[module/packages]
+type = custom/script
+exec = "pacman -Qu | wc -l"
+interval = 120
+label = " %output% 📦 |"
+
+;[module/pacman-packages]
+;type = custom/ipc hook-0 = sudo pacman -Qu | wc -l
+;format-prefix = "📦 "
+;click-left = updatepackages
+;initial = 1
+;
+;[module/crypto]
+;type = custom/script
+;exec = echo 💰
+;interval = 0
+;click-left = $TERMINAL -e cointop &
+;click-right = notifycrypto
+;
+;[module/torrents]
+;type = custom/script
+;exec = echo 📥
+;click-left = $TERMINAL -e tremc &
+;click-right = notifytorrents
+;interval = 0
+;
+;[module/memory]
+;type = custom/script
+;exec = i3memory
+;label = "%output%"
+;click-left = $TERMINAL -e htop &
+;interval = 10
+;format-prefix = "🧠 "
+;
+;[module/cpu-usage]
+;type = custom/script
+;exec = polycpu
+;label = "%output%"
+;click-left = $TERMINAL -e htop &
+;interval = 10
+;format-prefix = "💻 "
+;
+;[module/cpu-temperature]
+;type = custom/script
+;exec = polytempamd
+;label = "%output%"
+;format-prefix="🔥 "
+;interval = 10
+;
+;[module/weather]
+;type = custom/script
+;exec = i3weather
+;label = "%output%"
+;click-left = $TERMINAL -e w3m wttr.in/Adelaide &
+;interval = 1800
+;
+;[module/volume]
+;type = custom/ipc
+;hook-0 = polypulsevolume
+;click-left = $TERMINAL -e pulsemixer &
+;click-right = pulsevolctrl "output-mute" "alsa_output.pci-0000_0b_00.4.analog-stereo"
+;scroll-up = pulsevolctrl "output-vol" "alsa_output.pci-0000_0b_00.4.analog-stereo" +2%
+;scroll-down = pulsevolctrl "output-vol" "alsa_output.pci-0000_0b_00.4.analog-stereo" -2%
+;initial = 1
+;
+;[module/time]
+;type = custom/script
+;exec = date '+%d/%m/%Y %H:%M:%S'
+;click-left = thunderbird &
+;label = "%output%"
+;interval = 5
+;
+;; [module/wifi]
+;; type = custom/script
+;; exec = i3wifi
+;; label = "%output%"
+;; format-prefix = "📡 "
+;
+;; [module/battery]
+;; type = custom/script
+;; exec = polybattery
+;; label = "%output%"
+;; interval = 30
+;
+;; [module/backlight]
+;; type = custom/ipc
+;; hook-0 = light -G | sed 's/\.[0-9]*//'
+;; format-prefix = "💡 "
+;; initial = 1
+;
+;; vim:ft=dosini
