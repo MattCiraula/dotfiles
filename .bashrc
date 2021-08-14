@@ -1,1 +1,14 @@
-export foo="bar"
+alias cp='cp -i'
+alias mv='mv -i'
+alias ls='ls --color'
+alias newsboat='newsboat -u $HOME/.config/newsboat/urls'
+alias recon='nmcli connection up Zoom6221'
+alias rs='redshift -o 100K'
+alias suck='sudo make clean install'
+alias vmacs='emacs --with-profile vmacs'
+alias chx='chmod +x'
+
+mkcd () {
+  mkdir $1
+  cd $1
+}
