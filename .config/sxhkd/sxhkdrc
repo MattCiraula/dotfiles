@@ -68,6 +68,9 @@ alt + shift + x
 alt + {Left, Right}
   pamixer {--decrease, --increase} 10
 
+alt + m
+  pamixer -t
+
 #alt + shift + p
 #  killall polybar ; polybar bar &
 
