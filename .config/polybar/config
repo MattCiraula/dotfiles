@@ -16,7 +16,7 @@ margin-top = 0
 margin-bottom = 0
 
 [bar/bar]
-monitor = ${env:MONITOR:eDP}
+monitor = ${env:MONITOR:DP-1}
 monitor-fallback =
 monitor-strict = false
 monitor-exact = true
@@ -46,7 +46,7 @@ font-1 = Symbola:pixelsize=12;
 
 modules-left = bspwm 
 ;modules-right = stonkz bitcoin packages traffic cpu ram sound battery weather date
-modules-right =  bitcoin packages cpu ram sound battery weather date
+modules-right =  bitcoin packages cpu ram sound weather date
 
 ;tray-position = right
 ;tray-offset-x = 0
