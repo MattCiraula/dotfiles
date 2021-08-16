@@ -211,6 +211,11 @@
     "gF"  'magit-fetch-all
     "gr"  'magit-rebase
 
+    "h"   'evil-window-left
+    "j"   'evil-window-down
+    "k"   'evil-window-up
+    "l"   'evil-window-right
+
     "o"   '(:ignore t :which-key "open")
     "oc"  '(open-org-config :which-key "open emacs config")
     "oe"  'eshell
