@@ -1,5 +1,5 @@
 alt + p
-  dmenu_run
+  dmenu_run -c -l 12
 
 #---BSPWM Bindings
 # Quit bspwm
