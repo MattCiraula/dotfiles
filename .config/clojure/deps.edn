@@ -34,6 +34,10 @@
     ;; clojure -X:deps find-versions doesn't work unless this is commented...
     ;;:deps {:extra-deps {org.clojure/tools.deps.alpha {:mvn/version "0.11.922"}}}
     ;:test {:extra-paths ["test"]}
+    :new {:extra-deps {com.github.seancorfield/clj-new
+                       {:mvn/version "1.1.331"}}
+          :exec-fn clj-new/create
+          :exec-args {:template "app"}}
 
     :fmt {:extra-deps {com.jameslaverack/cljfmt-runner
                        {:git/url "https://github.com/JamesLaverack/cljfmt-runner"
@@ -45,7 +49,6 @@
                                           :sha "0ca84df1357d71429243b99908303f45a934654c"}}
             :main-opts ["-m" "clj-check.check"]}}
   
-
   ;; Provider attributes
 
   ;; :mvn/repos {
