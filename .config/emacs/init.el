@@ -223,6 +223,7 @@
     ;; TODO: implement open in other window keys
 
     "p"   '(:ignore t :which-key "projectile")
+    "pc"  'projectile-compile-project
     "pd"  'projectile-dired
     "pD"  'projectile-dired-other-window
     "pe"  'projectile-run-eshell
