@@ -67,6 +67,8 @@
 
 (use-package all-the-icons)
 
+(setq backup-directory-alist `(("." . ,(expand-file-name "tmp/backups/" user-emacs-directory))))
+
 ;; set tab width
 (setq-default tab-width 2)
 (setq-default evil-shift-width tab-width)

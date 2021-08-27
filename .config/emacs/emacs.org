@@ -99,6 +99,12 @@ Checkout abo-abo/avy for quick scope style motion
 
 #+end_src
 
+** File Handling
+#+begin_src emacs-lisp
+
+(setq backup-directory-alist `(("." . ,(expand-file-name "tmp/backups/" user-emacs-directory))))
+
+#+end_src
 * Editing Configuration
 ** Tab Widths
 #+begin_src emacs-lisp
