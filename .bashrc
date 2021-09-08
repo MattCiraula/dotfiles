@@ -14,6 +14,8 @@ export XDG_CONFIG_HOME="$HOME/.config"
 source $XDG_CONFIG_HOME/shell/aliasrc
 source $XDG_CONFIG_HOME/shell/functions
 source $XDG_CONFIG_HOME/shell/env
+source $XDG_CONFIG_HOME/shell/fzf/completion.bash
+source $XDG_CONFIG_HOME/shell/fzf/key-bindings.bash
 
 # if tmux is executable and not inside a tmux session, then try to attach.
 # if attachment fails, start a new session
