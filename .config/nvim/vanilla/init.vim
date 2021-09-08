@@ -1,7 +1,6 @@
 " Matt's nvim config
 " UI CONFIG
 set number relativenumber
-set nowrap
 "set termguicolors
 set cursorline
 let mapleader=' '
@@ -31,9 +30,11 @@ Plug 'sheerun/vim-polyglot'
 Plug 'vim-pandoc/vim-pandoc'
 Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
 Plug 'junegunn/fzf.vim'
-Plug 'Olical/conjure'
 Plug 'tpope/vim-dispatch'
 Plug 'clojure-vim/vim-jack-in'  
+Plug 'Olical/conjure'
+Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
+Plug 'neovim/nvim-lspconfig'
 "Plug 'vim-airline/vim-airline'
 "Plug 'kkvh/vim-docker-tools'
 "Plug 'airblade/vim-gitgutter'
@@ -108,6 +109,36 @@ nmap <silent> _ :Vexplore<CR>
 let g:netrw_banner = 0
 autocmd FileType netrw nmap <buffer> h -
 autocmd FileType netrw nmap <buffer> l <CR>
+
+" Tree sitter config
+lua <<EOF
+require'nvim-treesitter.configs'.setup {
+  highlight = {
+    enable = true,
+    custom_captures = {
+      -- Highlight the @foo.bar capture group with the "Identifier" highlight group.
+      ["foo.bar"] = "Identifier",
+    },
+    -- Setting this to true will run `:h syntax` and tree-sitter at the same time.
+    -- Set this to `true` if you depend on 'syntax' being enabled (like for indentation).
+    -- Using this option may slow down your editor, and you may see some duplicate highlights.
+    -- Instead of true it can also be a list of languages
+    additional_vim_regex_highlighting = false,
+  },
+}
+EOF
+
+" lsp config
+lua << EOF
+--require'lspconfig'.clojure_lsp.setup {
+  --Commands:
+  
+  --Default Values:
+    --cmd = { "clojure-lsp" },
+    --filetypes = { "clojure", "edn" },
+    --root_dir = root_pattern("project.clj", "deps.edn", ".git")
+--}
+EOF
 
 " quick scope
 "let g:qs_highlight_on_keys = ['f', 'F', 't', 'T']
