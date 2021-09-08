@@ -5,23 +5,21 @@ set nowrap
 "set termguicolors
 set cursorline
 let mapleader=' '
+let maplocalleader=';'
 set showmode
-set noautoindent
+set autoindent
 set ruler
 set textwidth=72
 syntax enable
 filetype plugin on
-
-" map leader to Space
-let mapleader = " "
 
 " allow netrw plugins
 set nocp                    " 'compatible' is not set
 filetype plugin on          " plugins are enabled 
 " PLUGIN MANAGEMENT
 " auto-install vim-plug
-if empty(glob('$XDG_CONFIG_HOME/nvim/autoload/plug.vim'))                              
-  silent !curl -fLo $XGD_CONFIG_HOME/nvim/autoload/plug.vim --create-dirs https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim 
+if empty(glob('~/.vim/autoload/plug.vim'))                              
+  silent !curl -fLo ~/.config/nvim/autoload/plug.vim --create-dirs https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim 
   autocmd VimEnter * PlugInstall
 endif                                                                                                                                 
 
@@ -29,13 +27,16 @@ endif
 call plug#begin('~/.config/vim/plugged') 
 Plug 'tpope/vim-fugitive'
 Plug 'morhetz/gruvbox'
+Plug 'sheerun/vim-polyglot'
+Plug 'vim-pandoc/vim-pandoc'
 Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
 Plug 'junegunn/fzf.vim'
 Plug 'Olical/conjure'
+Plug 'tpope/vim-dispatch'
+Plug 'clojure-vim/vim-jack-in'  
 "Plug 'vim-airline/vim-airline'
 "Plug 'kkvh/vim-docker-tools'
 "Plug 'airblade/vim-gitgutter'
-"Plug 'sheerun/vim-polyglot'
 "Plug 'fatih/vim-go', { 'do': ':GoInstallBinaries' }
 "Plug 'jacoborus/tender.vim'
 "Plug 'plasticboy/vim-markdown'
@@ -107,9 +108,6 @@ nmap <silent> _ :Vexplore<CR>
 let g:netrw_banner = 0
 autocmd FileType netrw nmap <buffer> h -
 autocmd FileType netrw nmap <buffer> l <CR>
-
-" iced
-let g:iced_enable_default_key_mappings = v:true
 
 " quick scope
 "let g:qs_highlight_on_keys = ['f', 'F', 't', 'T']
