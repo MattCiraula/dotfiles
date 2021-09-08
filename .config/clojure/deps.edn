@@ -16,10 +16,11 @@
   ;; :paths ["src"]
 
   ;; External dependencies
- 
-  ;; :deps {
-  ;;   org.clojure/clojure {:mvn/version "1.10.3"}
-  ;; }
+  :deps {
+    org.clojure/clojure {:mvn/version "1.10.3"}
+    nrepl/nrepl {:mvn/version "0.8.3"}
+    cider/cider-nrepl {:mvn/version "0.26.0"}
+  }
 
   ;; Aliases
 	;;   resolve-deps aliases (-R) affect dependency resolution, options:
@@ -42,7 +43,7 @@
     :fmt {:extra-deps {com.jameslaverack/cljfmt-runner
                        {:git/url "https://github.com/JamesLaverack/cljfmt-runner"
                         :sha "6383fbb0bd22a21c0edf5b699425504d9f0a958a"}}
-          :main-opts ["-m" "cljfmt-runner.check"]}
+          :main-opts ["-m" "cljfmt-runner.fix"]}
           :fmt/fix {:main-opts ["-m" "cljfmt-runner.fix"]} 
 
     :check {:extra-deps {athos/clj-check {:git/url "https://github.com/athos/clj-check.git"

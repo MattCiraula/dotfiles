@@ -1,14 +1,22 @@
-alias cp='cp -i'
-alias mv='mv -i'
-alias ls='ls --color'
-alias newsboat='newsboat -u $HOME/.config/newsboat/urls'
-alias recon='nmcli connection up Zoom6221'
-alias rs='redshift -o 100K'
-alias suck='sudo make clean install'
-alias vmacs='emacs --with-profile vmacs'
-alias chx='chmod +x'
+# exit if not running interactively
+case $- in
+    *i*) ;; # interactive
+    *) return ;; 
+esac
 
-mkcd () {
-  mkdir $1
-  cd $1
-}
+set -o vi
+shopt -s histappend
+shopt -s dotglob
+shopt -s extglob
+export HISTFILESIZE=10000
+export XDG_CONFIG_HOME="$HOME/.config"
+
+source $XDG_CONFIG_HOME/shell/aliasrc
+source $XDG_CONFIG_HOME/shell/functions
+source $XDG_CONFIG_HOME/shell/env
+
+# if tmux is executable and not inside a tmux session, then try to attach.
+# if attachment fails, start a new session
+[ -x "$(command -v tmux)" ] \
+    && [ -z "$TMUX" ] \
+    && { tmux attach || tmux; } >/dev/null 2>&1
