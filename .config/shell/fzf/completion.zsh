@@ -1,1 +1,0 @@
-../../dotfiles/.config/shell/fzf/completion.zsh
