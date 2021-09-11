@@ -1,8 +1,10 @@
+-- path config
 CONFIG_PATH = vim.fn.stdpath "config"
 DATA_PATH = vim.fn.stdpath "data"
 CACHE_PATH = vim.fn.stdpath "cache"
 TERMINAL = vim.fn.expand "$TERMINAL"
 
+-- option config
 local opt = vim.opt
 opt.number = true
 opt.relativenumber = true
@@ -10,7 +12,7 @@ opt.cursorline = true
 --opt.ignorcase = true
 opt.termguicolors = true
 
-vim.o.background = "dark" -- or "light" for light mode
+vim.o.background = "dark"
 vim.cmd([[colorscheme gruvbox]])
 
 -- map leaders
@@ -27,7 +29,20 @@ vim.cmd([[
   autocmd FileType netrw nmap <buffer> l <CR>
 ]])
 
--- Tree sitter config
+-- fzf config
+vim.api.nvim_set_keymap("n", "<Leader>fb", ":Buffers<CR>", { noremap = true, silent = true })
+vim.api.nvim_set_keymap("n", "<Leader>fd", ":Files $XDG_CONFIG_HOME/dotfiles/.config<CR>", { noremap = true, silent = true })
+vim.api.nvim_set_keymap("n", "<Leader>ff", ":Files<CR>", { noremap = true, silent = true })
+vim.api.nvim_set_keymap("n", "<Leader>fg", ":GFiles<CR>", { noremap = true, silent = true })
+vim.api.nvim_set_keymap("n", "<Leader>fh", ":History<CR>", { noremap = true, silent = true })
+vim.api.nvim_set_keymap("n", "<Leader>fl", ":BLines<CR>", { noremap = true, silent = true })
+vim.api.nvim_set_keymap("n", "<Leader>fm", ":Marks<CR>", { noremap = true, silent = true })
+vim.api.nvim_set_keymap("n", "<Leader>fs", ":Rg <CR>", { noremap = true, silent = true })
+
+-- fugitive config
+vim.api.nvim_set_keymap("n", "<Leader>gs", ":Git<CR>", { noremap = true, silent = true })
+
+-- tree sitter config
 require'nvim-treesitter.configs'.setup {
   highlight = {
     enable = true,
@@ -45,29 +60,49 @@ require'nvim-treesitter.configs'.setup {
 
 -- lsp config
 require'lspconfig'.clojure_lsp.setup{}
---[[local actions = require "telescope.actions"
 
-require('telescope').setup({
-  defaults = {
-    mappings = {
-      i = {
-        ["<C-j>"] = actions.move_selection_next,
-        ["<C-k>"] = actions.move_selection_previous,
-        ["<Esc>"] = actions.close,
-      },
-      n = {
-        ["<C-j>"] = actions.move_selection_next,
-        ["<C-k>"] = actions.move_selection_previous,
-        ["<Esc>"] = actions.close,
-      }
+-- cmp config
+-- TODO: not getting completions from other files included - probably need to configure clojure lsp
+local cmp = require'cmp'
+cmp.setup({
+    --[[snippet = {
+      expand = function(args)
+        vim.fn["vsnip#anonymous"](args.body)
+      end,
+    },]]--
+  mapping = {
+    ['<C-p>'] = cmp.mapping.select_prev_item(),
+    ['<C-n>'] = cmp.mapping.select_next_item(),
+    ['<C-d>'] = cmp.mapping.scroll_docs(-4),
+    ['<C-f>'] = cmp.mapping.scroll_docs(4),
+    ['<C-Space>'] = cmp.mapping.complete(),
+    ['<C-e>'] = cmp.mapping.close(),
+    ['<CR>'] = cmp.mapping.confirm {
+      behavior = cmp.ConfirmBehavior.Replace,
+      select = true,
+    },
+    ['<Tab>'] = function(fallback)
+      if vim.fn.pumvisible() == 1 then
+        vim.fn.feedkeys(vim.api.nvim_replace_termcodes('<C-n>', true, true, true), 'n')
+      --elseif luasnip.expand_or_jumpable() then
+       -- vim.fn.feedkeys(vim.api.nvim_replace_termcodes('<Plug>luasnip-expand-or-jump', true, true, true), '')
+      else
+        fallback()
+      end
+    end,
+    ['<S-Tab>'] = function(fallback)
+      if vim.fn.pumvisible() == 1 then
+        vim.fn.feedkeys(vim.api.nvim_replace_termcodes('<C-p>', true, true, true), 'n')
+      --elseif luasnip.jumpable(-1) then
+        --vim.fn.feedkeys(vim.api.nvim_replace_termcodes('<Plug>luasnip-jump-prev', true, true, true), '')
+      else
+        fallback()
+      end
+    end,
+  },
+    sources = {
+      { name = 'nvim_lsp' },
+      { name = 'conjure' },
+      --...
     }
-  }
 })
-
--- telescope config
-vim.api.nvim_set_keymap("n", "<Leader>sf", ":Telescope find_files<CR>", { noremap = true, silent = true })
-vim.api.nvim_set_keymap("n", "<Leader>sg", ":Telescope live_grep<CR>", { noremap = true, silent = true })
-vim.api.nvim_set_keymap("n", "<Leader>sb", ":Telescope buffers<CR>", { noremap = true, silent = true })
-vim.api.nvim_set_keymap("n", "<Leader>gb", ":Telescope git_branches<CR>", { noremap = true, silent = true })
-vim.api.nvim_set_keymap("n", "<Leader>gc", ":Telescope git_commits<CR>", { noremap = true, silent = true })
-]]--

@@ -9,6 +9,18 @@ return require('packer').startup(function()
 		run = 'fzf#install()'
 	}
 	use 'junegunn/fzf.vim'
+	use 'neovim/nvim-lspconfig'
+	--use 'guns/vim-sexp'
+	--use 'tpope/vim-sexp-mappings-for-regular-people'
+	--use 'tpope/vim-repeat'
+	--use 'tpope/vim-surround'
+	use {
+	  "hrsh7th/nvim-cmp",
+	  requires = {
+	    --"hrsh7th/vim-vsnip",
+	    "hrsh7th/cmp-buffer",
+	  }
+	}
 	use 'tpope/vim-dispatch'
 	use 'clojure-vim/vim-jack-in'
 	use 'Olical/conjure'
@@ -16,5 +28,5 @@ return require('packer').startup(function()
 		'nvim-treesitter/nvim-treesitter',
         	run = ':TSUpdate'
     	}
-	use 'neovim/nvim-lspconfig'
+	use 'PaterJason/cmp-conjure'
 end)
