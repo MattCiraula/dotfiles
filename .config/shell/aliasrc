@@ -8,3 +8,4 @@ alias suck='sudo make clean install'
 alias vmacs='emacs --with-profile vmacs'
 alias chx='chmod +x'
 alias vim='nvim'
+alias keys="setxkbmap -option caps:ctrl_modifier; xcape -e 'Caps_Lock=Escape'"
