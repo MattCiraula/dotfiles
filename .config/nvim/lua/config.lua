@@ -21,15 +21,15 @@ vim.api.nvim_set_keymap("n", "<Space>", "<NOP>", { noremap = true, silent = true
 vim.g.maplocalleader = ";"
 vim.api.nvim_set_keymap("n", ";", "<NOP>", { noremap = true, silent = true })
 
--- netrw config
-vim.api.nvim_set_keymap("n", "-", ":Explore<CR>", { noremap = true, silent = true })
-vim.api.nvim_set_keymap("n", "_", ":Vexplore<CR>", { noremap = true, silent = true })
-vim.cmd([[
-  autocmd FileType netrw nmap <buffer> h -
-  autocmd FileType netrw nmap <buffer> l <CR>
-]])
+-- leader bindings
+vim.api.nvim_set_keymap("n", "<Leader>bn", ":bnext<CR>", { noremap = true, silent = true })
+vim.api.nvim_set_keymap("n", "<Leader>bp", ":bprevious<CR>", { noremap = true, silent = true })
+vim.api.nvim_set_keymap("n", "<Leader>bs", ":Buffers<CR>", { noremap = true, silent = true })
+-- TODO kill buffer
 
--- fzf config
+vim.api.nvim_set_keymap("n", "<Leader>dh", ":Explore ~<CR>", { noremap = true, silent = true })
+vim.api.nvim_set_keymap("n", "<Leader>dp", ":Explore ~/projects<CR>", { noremap = true, silent = true })
+
 vim.api.nvim_set_keymap("n", "<Leader>fb", ":Buffers<CR>", { noremap = true, silent = true })
 vim.api.nvim_set_keymap("n", "<Leader>fd", ":Files $XDG_CONFIG_HOME/dotfiles/.config<CR>", { noremap = true, silent = true })
 vim.api.nvim_set_keymap("n", "<Leader>ff", ":Files<CR>", { noremap = true, silent = true })
@@ -39,8 +39,22 @@ vim.api.nvim_set_keymap("n", "<Leader>fl", ":BLines<CR>", { noremap = true, sile
 vim.api.nvim_set_keymap("n", "<Leader>fm", ":Marks<CR>", { noremap = true, silent = true })
 vim.api.nvim_set_keymap("n", "<Leader>fs", ":Rg <CR>", { noremap = true, silent = true })
 
--- fugitive config
+vim.api.nvim_set_keymap("n", "<Leader>gp", ":Git pull<CR>", { noremap = true, silent = true })
+vim.api.nvim_set_keymap("n", "<Leader>gP", ":Git push<CR>", { noremap = true, silent = true })
 vim.api.nvim_set_keymap("n", "<Leader>gs", ":Git<CR>", { noremap = true, silent = true })
+
+vim.api.nvim_set_keymap("n", "<Leader>n", ":set number!<CR> :set relativenumber!<CR>", { noremap = true, silent = true})
+
+vim.api.nvim_set_keymap("n", "<Leader>oc", ":edit ~/.config/dotfiles/.config/nvim/lua/config.lua<CR>", { noremap = true, silent = true })
+
+
+-- netrw config
+vim.api.nvim_set_keymap("n", "-", ":Explore<CR>", { noremap = true, silent = true })
+vim.api.nvim_set_keymap("n", "_", ":Vexplore<CR>", { noremap = true, silent = true })
+vim.cmd([[
+  autocmd FileType netrw nmap <buffer> h -
+  autocmd FileType netrw nmap <buffer> l <CR>
+]])
 
 -- tree sitter config
 require'nvim-treesitter.configs'.setup {
@@ -56,6 +70,10 @@ require'nvim-treesitter.configs'.setup {
     -- Instead of true it can also be a list of languages
     additional_vim_regex_highlighting = false,
   },
+}
+
+require('lint').linters_by_ft = {
+  clojure = {'clj-kondo',}
 }
 
 -- lsp config

@@ -9,11 +9,8 @@ return require('packer').startup(function()
 		run = 'fzf#install()'
 	}
 	use 'junegunn/fzf.vim'
+	use 'mfussenegger/nvim-lint'
 	use 'neovim/nvim-lspconfig'
-	--use 'guns/vim-sexp'
-	--use 'tpope/vim-sexp-mappings-for-regular-people'
-	--use 'tpope/vim-repeat'
-	--use 'tpope/vim-surround'
 	use {
 	  "hrsh7th/nvim-cmp",
 	  requires = {
@@ -29,4 +26,8 @@ return require('packer').startup(function()
         	run = ':TSUpdate'
     	}
 	use 'PaterJason/cmp-conjure'
+	--use 'guns/vim-sexp'
+	--use 'tpope/vim-sexp-mappings-for-regular-people'
+	--use 'tpope/vim-repeat'
+	--use 'tpope/vim-surround'
 end)
