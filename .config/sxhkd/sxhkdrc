@@ -15,7 +15,7 @@ alt + shift + r
   bspc wm -r
 
 # Kill Window 
-alt + c
+alt + shift + c
   bspc node --close
 
 # Focus on window in direction
