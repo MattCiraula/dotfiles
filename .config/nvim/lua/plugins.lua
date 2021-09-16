@@ -20,6 +20,7 @@ return require('packer').startup(function()
 	}
 	use 'tpope/vim-dispatch'
 	use 'clojure-vim/vim-jack-in'
+	use 'vim-scripts/paredit.vim'
 	use 'Olical/conjure'
     	use { 
 		'nvim-treesitter/nvim-treesitter',
