@@ -14,6 +14,10 @@ opt.termguicolors = true
 
 vim.o.background = "dark"
 vim.cmd([[colorscheme gruvbox]])
+-- set tab to 2 spaces
+opt.tabstop = 2
+opt.shiftwidth = 2
+opt.expandtab = true
 
 -- map leaders
 vim.g.mapleader = " "
@@ -47,7 +51,6 @@ vim.api.nvim_set_keymap("n", "<Leader>n", ":set number!<CR> :set relativenumber!
 
 vim.api.nvim_set_keymap("n", "<Leader>oc", ":edit ~/.config/dotfiles/.config/nvim/lua/config.lua<CR>", { noremap = true, silent = true })
 
-
 -- netrw config
 vim.api.nvim_set_keymap("n", "-", ":Explore<CR>", { noremap = true, silent = true })
 vim.api.nvim_set_keymap("n", "_", ":Vexplore<CR>", { noremap = true, silent = true })
@@ -72,9 +75,22 @@ require'nvim-treesitter.configs'.setup {
   },
 }
 
+-- paredit config
+vim.g.paredit_smartjump = 1
+vim.g.paredit_shortmaps = 0
+
+-- lint config
 require('lint').linters_by_ft = {
   clojure = {'clj-kondo',}
 }
+
+-- lsp install
+require'lspinstall'.setup() -- important
+
+local servers = require'lspinstall'.installed_servers()
+for _, server in pairs(servers) do
+  require'lspconfig'[server].setup{}
+end
 
 -- lsp config
 require'lspconfig'.clojure_lsp.setup{}

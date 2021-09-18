@@ -10,6 +10,7 @@ return require('packer').startup(function()
 	}
 	use 'junegunn/fzf.vim'
 	use 'mfussenegger/nvim-lint'
+  use 'kabouzeid/nvim-lspinstall'
 	use 'neovim/nvim-lspconfig'
 	use {
 	  "hrsh7th/nvim-cmp",
