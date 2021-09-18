@@ -6,11 +6,11 @@ if fn.empty(fn.glob(install_path)) > 0 then
   vim.cmd 'packadd packer.nvim'
 end
 
--- automatically compile packer when this file is updated
+-- automatically install plugins when this file is updated
 vim.cmd([[
   augroup packer_user_config
     autocmd!
-    autocmd BufWritePost plugins.lua source <afile> | PackerCompile
+    autocmd BufWritePost plugins.lua source <afile> | PackerInstall
   augroup end
 ]])
 
@@ -18,7 +18,6 @@ return require('packer').startup(function()
 	use 'wbthomason/packer.nvim'
 	use {'rktjmp/lush.nvim'}
 	use {'ellisonleao/gruvbox.nvim', requires = {'rktjmp/lush.nvim'}}
-	use 'Olical/aniseed'
 	use 'tpope/vim-fugitive'
 	use {
 		'junegunn/fzf',
@@ -38,6 +37,7 @@ return require('packer').startup(function()
 	use 'tpope/vim-dispatch'
 	use 'clojure-vim/vim-jack-in'
 	use 'vim-scripts/paredit.vim'
+	use 'Olical/aniseed'
 	use 'Olical/conjure'
     	use { 
 		'nvim-treesitter/nvim-treesitter',
