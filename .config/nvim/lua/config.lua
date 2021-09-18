@@ -51,6 +51,8 @@ vim.api.nvim_set_keymap("n", "<Leader>n", ":set number!<CR> :set relativenumber!
 
 vim.api.nvim_set_keymap("n", "<Leader>oc", ":edit ~/.config/dotfiles/.config/nvim/lua/config.lua<CR>", { noremap = true, silent = true })
 
+vim.api.nvim_set_keymap("n", "<Leader>;", ":!clj -M:fmt<CR>", { noremap = true, silent = true })
+
 -- netrw config
 vim.api.nvim_set_keymap("n", "-", ":Explore<CR>", { noremap = true, silent = true })
 vim.api.nvim_set_keymap("n", "_", ":Vexplore<CR>", { noremap = true, silent = true })
