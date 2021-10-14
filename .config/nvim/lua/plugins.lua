@@ -23,6 +23,7 @@ return require('packer').startup(function()
 		'junegunn/fzf',
 		run = 'fzf#install()'
 	}
+  use 'vimwiki/vimwiki'
 	use 'junegunn/fzf.vim'
 	use 'mfussenegger/nvim-lint'
   use 'kabouzeid/nvim-lspinstall'

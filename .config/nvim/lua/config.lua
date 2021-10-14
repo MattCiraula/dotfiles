@@ -96,6 +96,7 @@ end
 
 -- lsp config
 require'lspconfig'.clojure_lsp.setup{}
+--FIXME: require'lspconfig'.go_lsp.setup{}
 
 -- cmp config
 -- TODO: not getting completions from other files included - probably need to configure clojure lsp
@@ -142,3 +143,9 @@ cmp.setup({
       --...
     }
 })
+
+-- vimwiki config
+vim.api.nvim_exec([[
+let g:vimwiki_list = [{'path': '~/vimwiki/', 'syntax': 'markdown', 'ext': '.md'}]
+]],
+false)
