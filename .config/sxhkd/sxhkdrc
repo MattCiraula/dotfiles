@@ -8,7 +8,7 @@ alt + shift + q
 
 # restart polybar
 alt + shift + p
-  killall polybar && polybar bar &
+  killall polybar ; polybar bar &
 
 # Restart bspwm
 alt + shift + r
@@ -60,6 +60,10 @@ ctrl + alt + {h,j,k,l}
 # Restart hotkey damon
 alt + shift + x
   killall sxhkd ; sxhkd &
+
+#TODO: FIXME
+alt + shift + k
+  keys
 
 # Lock the screen
 #super + shift + e
