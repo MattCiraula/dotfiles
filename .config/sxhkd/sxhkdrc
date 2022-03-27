@@ -99,10 +99,15 @@ alt + r
 
 alt + f
   kitty sh -c vifmrun
-  
+
+alt + shift + y
+  ytdl
 
 alt + shift + t
   bspc node -t \~floating
+
+ctrl + alt + shift + 6
+  base64-decode
 
 #alt + shift + ;
 #send window to left workspace
