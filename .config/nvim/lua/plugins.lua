@@ -16,27 +16,36 @@ vim.cmd([[
 
 return require('packer').startup(function()
 	use 'wbthomason/packer.nvim'
-	use {'rktjmp/lush.nvim'}
-	use {'ellisonleao/gruvbox.nvim', requires = {'rktjmp/lush.nvim'}}
+	use 'ellisonleao/gruvbox.nvim'
+  use 'shaunsingh/nord.nvim'
+  use {
+    'nvim-lualine/lualine.nvim',
+    requires = { 'kyazdani42/nvim-web-devicons', opt = true }
+  }
+  use 'lewis6991/gitsigns.nvim'
+  use {
+    'nvim-telescope/telescope.nvim',
+    requires = 'nvim-lua/plenary.nvim' 
+  }
+  use { 'TimUntersberger/neogit',
+    requires = 'nvim-lua/plenary.nvim' 
+  }
 	use 'tpope/vim-fugitive'
 	use {
 		'junegunn/fzf',
 		run = 'fzf#install()'
 	}
-  use 'vimwiki/vimwiki'
+  --use 'vimwiki/vimwiki'
 	use 'junegunn/fzf.vim'
-	use 'mfussenegger/nvim-lint'
-  use 'kabouzeid/nvim-lspinstall'
+  use 'williamboman/nvim-lsp-installer'
 	use 'neovim/nvim-lspconfig'
 	use {
 	  "hrsh7th/nvim-cmp",
 	  requires = {
-	    --"hrsh7th/vim-vsnip",
 	    "hrsh7th/cmp-buffer",
 	  }
 	}
-	use 'tpope/vim-dispatch'
-	use 'clojure-vim/vim-jack-in'
+  use "hrsh7th/cmp-nvim-lsp"
 	use 'vim-scripts/paredit.vim'
 	use 'Olical/aniseed'
 	use 'Olical/conjure'
@@ -44,9 +53,5 @@ return require('packer').startup(function()
 		'nvim-treesitter/nvim-treesitter',
         	run = ':TSUpdate'
     	}
-	use 'PaterJason/cmp-conjure'
-	--use 'guns/vim-sexp'
-	--use 'tpope/vim-sexp-mappings-for-regular-people'
-	--use 'tpope/vim-repeat'
-	--use 'tpope/vim-surround'
+	--use 'PaterJason/cmp-conjure'
 end)
