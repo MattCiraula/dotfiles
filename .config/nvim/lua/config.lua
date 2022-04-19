@@ -84,41 +84,37 @@ vim.cmd([[
 ]])
 
 -- tree sitter config
-require'nvim-treesitter.configs'.setup {
-  highlight = {
+local status_ok, configs = pcall(require, "nvim-treesitter.configs")
+if not status_ok then
+  return
+end
+
+configs.setup {
+  ensure_installed = "all",
+  sync_install = false, -- install languages synchronously (only applied to `ensure_installed`)
+  ignore_install = { "" }, -- List of parsers to ignore installing
+  autopairs = {
     enable = true,
-    custom_captures = {
-      -- Highlight the @foo.bar capture group with the "Identifier" highlight group.
-      ["foo.bar"] = "Identifier",
-    },
-    -- Setting this to true will run `:h syntax` and tree-sitter at the same time.
-    -- Set this to `true` if you depend on 'syntax' being enabled (like for indentation).
-    -- Using this option may slow down your editor, and you may see some duplicate highlights.
-    -- Instead of true it can also be a list of languages
-    additional_vim_regex_highlighting = false,
+  },
+  highlight = {
+    enable = true, -- false will disable the whole extension
+    disable = { "" }, -- list of language that will be disabled
+    additional_vim_regex_highlighting = true,
+  },
+  indent = { enable = true, disable = { "yaml" } },
+  context_commentstring = {
+    enable = true,
+    enable_autocmd = false,
   },
 }
 
--- paredit config
-vim.g.paredit_smartjump = 1
-vim.g.paredit_shortmaps = 0
-
--- lint config
-require('lint').linters_by_ft = {
-  clojure = {'clj-kondo',}
-}
-
 -- lsp install
-require'lspinstall'.setup() -- important
-
-local servers = require'lspinstall'.installed_servers()
-for _, server in pairs(servers) do
-  require'lspconfig'[server].setup{}
-end
-
 -- lsp config
+--require'lspconfig'.bashls.setup{}
 require'lspconfig'.clojure_lsp.setup{}
---FIXME: require'lspconfig'.go_lsp.setup{}
+--require'lspconfig'.sumneko_lua.setup{}
+--require'lspconfig'.zeta_note.setup{}
+--require'lspconfig'.go_lsp.setup{}
 
 -- cmp config
 -- TODO: not getting completions from other files included - probably need to configure clojure lsp
@@ -167,7 +163,6 @@ cmp.setup({
 })
 
 -- vimwiki config
-vim.api.nvim_exec([[
-let g:vimwiki_list = [{'path': '~/vimwiki/', 'syntax': 'markdown', 'ext': '.md'}]
-]],
-false)
+--vim.api.nvim_exec([[
+--let g:vimwiki_list = [{'path': '~/vimwiki/', 'syntax': 'markdown'}]]],
+--false)
