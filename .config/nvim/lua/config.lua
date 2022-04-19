@@ -9,15 +9,16 @@ local opt = vim.opt
 opt.number = true
 opt.relativenumber = true
 opt.cursorline = true
---opt.ignorcase = true
-opt.termguicolors = true
-
-vim.o.background = "dark"
-vim.cmd([[colorscheme gruvbox]])
--- set tab to 2 spaces
 opt.tabstop = 2
 opt.shiftwidth = 2
 opt.expandtab = true
+--opt.ignorcase = true
+
+-- color config
+opt.termguicolors = true
+vim.o.background = "dark"
+vim.cmd([[colorscheme gruvbox]])
+
 
 -- map leaders
 vim.g.mapleader = " "
