@@ -29,30 +29,51 @@ vim.api.nvim_set_keymap("n", ";", "<NOP>", { noremap = true, silent = true })
 -- leader bindings
 vim.api.nvim_set_keymap("n", "<Leader>bn", ":bnext<CR>", { noremap = true, silent = true })
 vim.api.nvim_set_keymap("n", "<Leader>bp", ":bprevious<CR>", { noremap = true, silent = true })
-vim.api.nvim_set_keymap("n", "<Leader>bs", ":Buffers<CR>", { noremap = true, silent = true })
+vim.api.nvim_set_keymap("n", "<Leader>bs", ":Telescope buffers<CR>", { noremap = true, silent = true })
 -- TODO kill buffer
 
 vim.api.nvim_set_keymap("n", "<Leader>dh", ":Explore ~<CR>", { noremap = true, silent = true })
 vim.api.nvim_set_keymap("n", "<Leader>dp", ":Explore ~/projects<CR>", { noremap = true, silent = true })
 
-vim.api.nvim_set_keymap("n", "<Leader>fb", ":Buffers<CR>", { noremap = true, silent = true })
+vim.api.nvim_set_keymap("n", "<Leader>fb", ":Telescope buffers<CR>", { noremap = true, silent = true })
 vim.api.nvim_set_keymap("n", "<Leader>fd", ":Files $XDG_CONFIG_HOME/dotfiles/.config<CR>", { noremap = true, silent = true })
-vim.api.nvim_set_keymap("n", "<Leader>ff", ":Files<CR>", { noremap = true, silent = true })
-vim.api.nvim_set_keymap("n", "<Leader>fg", ":GFiles<CR>", { noremap = true, silent = true })
-vim.api.nvim_set_keymap("n", "<Leader>fh", ":History<CR>", { noremap = true, silent = true })
-vim.api.nvim_set_keymap("n", "<Leader>fl", ":BLines<CR>", { noremap = true, silent = true })
-vim.api.nvim_set_keymap("n", "<Leader>fm", ":Marks<CR>", { noremap = true, silent = true })
-vim.api.nvim_set_keymap("n", "<Leader>fs", ":Rg <CR>", { noremap = true, silent = true })
+vim.api.nvim_set_keymap("n", "<Leader>ff", ":Telescope find_files<CR>", { noremap = true, silent = true })
+vim.api.nvim_set_keymap("n", "<Leader>fg", ":Telescope git_files<CR>", { noremap = true, silent = true })
+-- FIXME: Find telescope equivalent
+--vim.api.nvim_set_keymap("n", "<Leader>fh", ":<CR>", { noremap = true, silent = true })
+vim.api.nvim_set_keymap("n", "<Leader>fl", ":Telescope current_buffer_fuzzy_find<CR>", { noremap = true, silent = true })
+vim.api.nvim_set_keymap("n", "<Leader>fm", ":Telescope marks<CR>", { noremap = true, silent = true })
+vim.api.nvim_set_keymap("n", "<Leader>fs", ":Telescope live_grep<CR>", { noremap = true, silent = true })
 
 vim.api.nvim_set_keymap("n", "<Leader>gp", ":Git pull<CR>", { noremap = true, silent = true })
 vim.api.nvim_set_keymap("n", "<Leader>gP", ":Git push<CR>", { noremap = true, silent = true })
 vim.api.nvim_set_keymap("n", "<Leader>gs", ":Git<CR>", { noremap = true, silent = true })
 
+vim.api.nvim_set_keymap("n", "<Leader>h", "<C-w>h", { noremap = true, silent = true })
+vim.api.nvim_set_keymap("n", "<Leader>j", "<C-w>j", { noremap = true, silent = true })
+vim.api.nvim_set_keymap("n", "<Leader>k", "<C-w>k", { noremap = true, silent = true })
+vim.api.nvim_set_keymap("n", "<Leader>l", "<C-w>l", { noremap = true, silent = true })
+
 vim.api.nvim_set_keymap("n", "<Leader>n", ":set number!<CR> :set relativenumber!<CR>", { noremap = true, silent = true})
 
 vim.api.nvim_set_keymap("n", "<Leader>oc", ":edit ~/.config/dotfiles/.config/nvim/lua/config.lua<CR>", { noremap = true, silent = true })
 
-vim.api.nvim_set_keymap("n", "<Leader>;", ":!clj -M:fmt<CR>", { noremap = true, silent = true })
+vim.api.nvim_set_keymap("n", "<Leader>;r", ":Telescope lsp_references<CR>", { noremap = true, silent = true })
+vim.api.nvim_set_keymap("n", "<Leader>;d", ":Telescope lsp_definitions<CR>", { noremap = true, silent = true })
+vim.api.nvim_set_keymap("n", "<Leader>;d", ":Telescope lsp_definitions<CR>", { noremap = true, silent = true })
+
+vim.api.nvim_set_keymap("n", "<Leader>:", ":!clj -M:fmt<CR>", { noremap = true, silent = true })
+
+-- lua line setup
+require('lualine').setup {
+  options = {
+    component_separators = {left = '', right = ''},
+    section_separators = { left = '', right = '' },
+  },
+}
+
+-- git signs setup
+require('gitsigns').setup()
 
 -- netrw config
 vim.api.nvim_set_keymap("n", "-", ":Explore<CR>", { noremap = true, silent = true })
