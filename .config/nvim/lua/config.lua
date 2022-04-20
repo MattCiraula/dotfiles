@@ -38,6 +38,9 @@ vim.api.nvim_set_keymap("n", "<Leader>dp", ":Explore ~/projects<CR>", { noremap 
 vim.api.nvim_set_keymap("n", "<Leader>fb", ":Telescope buffers<CR>", { noremap = true, silent = true })
 vim.api.nvim_set_keymap("n", "<Leader>fd", ":lua require(\"telescope.builtin\").find_files({cwd=\"$XDG_CONFIG_HOME/dotfiles\", hidden=true})<CR>", { noremap = true, silent = true })
 vim.api.nvim_set_keymap("n", "<Leader>ff", ":Telescope find_files<CR>", { noremap = true, silent = true })
+vim.api.nvim_set_keymap("n", "<Leader>fgb", ":Telescope git_branches<CR>", { noremap = true, silent = true })
+vim.api.nvim_set_keymap("n", "<Leader>fgc", ":Telescope git_commits<CR>", { noremap = true, silent = true })
+vim.api.nvim_set_keymap("n", "<Leader>fgC", ":Telescope git_bcommits<CR>", { noremap = true, silent = true })
 vim.api.nvim_set_keymap("n", "<Leader>fF", ":lua require(\"telescope.builtin\").find_files({cwd=\"%:p:h\"})<CR>", { noremap = true, silent = true })
 vim.api.nvim_set_keymap("n", "<Leader>fg", ":Telescope git_files<CR>", { noremap = true, silent = true })
 vim.api.nvim_set_keymap("n", "<Leader>fj", ":Telescope current_buffer_fuzzy_find<CR>", { noremap = true, silent = true })
@@ -47,9 +50,10 @@ vim.api.nvim_set_keymap("n", "<Leader>fs", ":Telescope live_grep<CR>", { noremap
 vim.api.nvim_set_keymap("n", "<Leader>ft", ":Telescope treesitter<CR>", { noremap = true, silent = true })
 
 vim.api.nvim_set_keymap("n", "<Leader>G", ":Neogit<CR>", { noremap = true, silent = true })
-vim.api.nvim_set_keymap("n", "<Leader>gb", ":Telescope git_branches<CR>", { noremap = true, silent = true })
-vim.api.nvim_set_keymap("n", "<Leader>gc", ":Telescope git_commits<CR>", { noremap = true, silent = true })
-vim.api.nvim_set_keymap("n", "<Leader>gC", ":Telescope git_bcommits<CR>", { noremap = true, silent = true })
+vim.api.nvim_set_keymap("n", "<Leader>gc", ":Git commit<CR>", { noremap = true, silent = true })
+vim.api.nvim_set_keymap("n", "<Leader>gf", ":Git fetch<CR>", { noremap = true, silent = true })
+vim.api.nvim_set_keymap("n", "<Leader>gp", ":Git pull<CR>", { noremap = true, silent = true })
+vim.api.nvim_set_keymap("n", "<Leader>gP", ":Git push<CR>", { noremap = true, silent = true })
 vim.api.nvim_set_keymap("n", "<Leader>gs", ":Telescope git_status<CR>", { noremap = true, silent = true })
 
 vim.api.nvim_set_keymap("n", "<Leader>h", "<C-w>h", { noremap = true, silent = true })
