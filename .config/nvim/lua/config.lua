@@ -36,18 +36,21 @@ vim.api.nvim_set_keymap("n", "<Leader>dh", ":Explore ~<CR>", { noremap = true, s
 vim.api.nvim_set_keymap("n", "<Leader>dp", ":Explore ~/projects<CR>", { noremap = true, silent = true })
 
 vim.api.nvim_set_keymap("n", "<Leader>fb", ":Telescope buffers<CR>", { noremap = true, silent = true })
-vim.api.nvim_set_keymap("n", "<Leader>fd", ":Files $XDG_CONFIG_HOME/dotfiles/.config<CR>", { noremap = true, silent = true })
+vim.api.nvim_set_keymap("n", "<Leader>fd", ":lua require(\"telescope.builtin\").find_files({cwd=\"$XDG_CONFIG_HOME/dotfiles\", hidden=true})<CR>", { noremap = true, silent = true })
 vim.api.nvim_set_keymap("n", "<Leader>ff", ":Telescope find_files<CR>", { noremap = true, silent = true })
+vim.api.nvim_set_keymap("n", "<Leader>fF", ":lua require(\"telescope.builtin\").find_files({cwd=\"%:p:h\"})<CR>", { noremap = true, silent = true })
 vim.api.nvim_set_keymap("n", "<Leader>fg", ":Telescope git_files<CR>", { noremap = true, silent = true })
--- FIXME: Find telescope equivalent
---vim.api.nvim_set_keymap("n", "<Leader>fh", ":<CR>", { noremap = true, silent = true })
-vim.api.nvim_set_keymap("n", "<Leader>fl", ":Telescope current_buffer_fuzzy_find<CR>", { noremap = true, silent = true })
+vim.api.nvim_set_keymap("n", "<Leader>fj", ":Telescope current_buffer_fuzzy_find<CR>", { noremap = true, silent = true })
+vim.api.nvim_set_keymap("n", "<Leader>fl", ":lua require(\"telescope.builtin\").find_files({cwd=\"%:p:h\"})<CR>", { noremap = true, silent = true })
 vim.api.nvim_set_keymap("n", "<Leader>fm", ":Telescope marks<CR>", { noremap = true, silent = true })
 vim.api.nvim_set_keymap("n", "<Leader>fs", ":Telescope live_grep<CR>", { noremap = true, silent = true })
+vim.api.nvim_set_keymap("n", "<Leader>ft", ":Telescope treesitter<CR>", { noremap = true, silent = true })
 
-vim.api.nvim_set_keymap("n", "<Leader>gp", ":Git pull<CR>", { noremap = true, silent = true })
-vim.api.nvim_set_keymap("n", "<Leader>gP", ":Git push<CR>", { noremap = true, silent = true })
-vim.api.nvim_set_keymap("n", "<Leader>gs", ":Git<CR>", { noremap = true, silent = true })
+vim.api.nvim_set_keymap("n", "<Leader>G", ":Neogit<CR>", { noremap = true, silent = true })
+vim.api.nvim_set_keymap("n", "<Leader>gb", ":Telescope git_branches<CR>", { noremap = true, silent = true })
+vim.api.nvim_set_keymap("n", "<Leader>gc", ":Telescope git_commits<CR>", { noremap = true, silent = true })
+vim.api.nvim_set_keymap("n", "<Leader>gC", ":Telescope git_bcommits<CR>", { noremap = true, silent = true })
+vim.api.nvim_set_keymap("n", "<Leader>gs", ":Telescope git_status<CR>", { noremap = true, silent = true })
 
 vim.api.nvim_set_keymap("n", "<Leader>h", "<C-w>h", { noremap = true, silent = true })
 vim.api.nvim_set_keymap("n", "<Leader>j", "<C-w>j", { noremap = true, silent = true })
@@ -58,9 +61,10 @@ vim.api.nvim_set_keymap("n", "<Leader>n", ":set number!<CR> :set relativenumber!
 
 vim.api.nvim_set_keymap("n", "<Leader>oc", ":edit ~/.config/dotfiles/.config/nvim/lua/config.lua<CR>", { noremap = true, silent = true })
 
+vim.api.nvim_set_keymap("n", "<Leader>;a", ":Telescope lsp_code_actions<CR>", { noremap = true, silent = true })
+vim.api.nvim_set_keymap("n", "<Leader>;d", ":Telescope lsp_definitions<CR>", { noremap = true, silent = true })
+vim.api.nvim_set_keymap("n", "<Leader>;i", ":Telescope lsp_implementations<CR>", { noremap = true, silent = true })
 vim.api.nvim_set_keymap("n", "<Leader>;r", ":Telescope lsp_references<CR>", { noremap = true, silent = true })
-vim.api.nvim_set_keymap("n", "<Leader>;d", ":Telescope lsp_definitions<CR>", { noremap = true, silent = true })
-vim.api.nvim_set_keymap("n", "<Leader>;d", ":Telescope lsp_definitions<CR>", { noremap = true, silent = true })
 
 vim.api.nvim_set_keymap("n", "<Leader>:", ":!clj -M:fmt<CR>", { noremap = true, silent = true })
 
@@ -84,12 +88,7 @@ vim.cmd([[
 ]])
 
 -- tree sitter config
-local status_ok, configs = pcall(require, "nvim-treesitter.configs")
-if not status_ok then
-  return
-end
-
-configs.setup {
+require'nvim-treesitter.configs'.setup {
   ensure_installed = "all",
   sync_install = false, -- install languages synchronously (only applied to `ensure_installed`)
   ignore_install = { "" }, -- List of parsers to ignore installing
@@ -106,6 +105,7 @@ configs.setup {
     enable = true,
     enable_autocmd = false,
   },
+
 }
 
 -- lsp install
