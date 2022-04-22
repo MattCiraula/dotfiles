@@ -86,14 +86,16 @@ require('lualine').setup {
     section_separators = { left = '', right = '' },
   },
 }
-opt.laststatus=3
+opt.laststatus = 3
 
 -- git signs setup
 require('gitsigns').setup()
 
 -- netrw config
+vim.g.netrw_banner = 0
+vim.cmd([[let g:netrw_list_hide= '.*\.swp$,.DS_Store,*/tmp/*,*.so,*.swp,*.zip,*.git,^\.\.\=/\=$']])
 vim.api.nvim_set_keymap("n", "-", ":Explore<CR>", { noremap = true, silent = true })
-vim.api.nvim_set_keymap("n", "_", ":Vexplore<CR>", { noremap = true, silent = true })
+vim.api.nvim_set_keymap("n", "_", ":Lexplore<CR>", { noremap = true, silent = true })
 vim.cmd([[
   autocmd FileType netrw nmap <buffer> h -
   autocmd FileType netrw nmap <buffer> l <CR>
