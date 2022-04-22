@@ -45,6 +45,7 @@ vim.api.nvim_set_keymap("n", "<Leader>fg", ":Telescope git_files<CR>", { noremap
 vim.api.nvim_set_keymap("n", "<Leader>fj", ":Telescope current_buffer_fuzzy_find<CR>", { noremap = true, silent = true })
 vim.api.nvim_set_keymap("n", "<Leader>fl", ":lua require(\"telescope.builtin\").find_files({cwd=\"%:p:h\"})<CR>", { noremap = true, silent = true })
 vim.api.nvim_set_keymap("n", "<Leader>fm", ":Telescope marks<CR>", { noremap = true, silent = true })
+vim.api.nvim_set_keymap("n", "<Leader>fp", ":lua require(\"telescope.builtin\").find_files({cwd=\"$HOME/projects\", hidden=true})<CR>", { noremap = true, silent = true })
 vim.api.nvim_set_keymap("n", "<Leader>fs", ":Telescope live_grep<CR>", { noremap = true, silent = true })
 vim.api.nvim_set_keymap("n", "<Leader>ft", ":Telescope treesitter<CR>", { noremap = true, silent = true })
 
