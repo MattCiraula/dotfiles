@@ -86,6 +86,7 @@ require('lualine').setup {
     section_separators = { left = '', right = '' },
   },
 }
+opt.laststatus=3
 
 -- git signs setup
 require('gitsigns').setup()
