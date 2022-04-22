@@ -19,7 +19,6 @@ opt.termguicolors = true
 vim.o.background = "dark"
 vim.cmd([[colorscheme gruvbox]])
 
-
 -- map leaders
 vim.g.mapleader = " "
 vim.api.nvim_set_keymap("n", "<Space>", "<NOP>", { noremap = true, silent = true })
@@ -172,6 +171,12 @@ cmp.setup({
       --...
     }
 })
+
+-- automatically source tmux.conf after saving
+-- TODO: add one for all zsh files
+vim.cmd([[augroup tmux_save | au!
+    autocmd BufWritePost tmux.conf !tmux source-file $XDG_CONFIG_HOME/tmux/tmux.conf
+augroup end]])
 
 -- vimwiki config
 --vim.api.nvim_exec([[
