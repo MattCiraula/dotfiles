@@ -150,6 +150,12 @@ end
 
 vim.api.nvim_set_keymap("i", "<cr>", "v:lua.cmp_npairs_cr()", {expr = true, noremap = true})
 
+require('lint').linters_by_ft = {
+  clojure = {'clj-kondo',}
+}
+
+--TODO: FIXME vim.cmd([[au BufWritePost <buffer> clojure require('lint').try_lint()]])
+
 -- automatically source tmux.conf after saving
 -- TODO: add one for all zsh files
 vim.cmd([[augroup tmux_save | au!
