@@ -17,9 +17,7 @@
 
   ;; External dependencies
   :deps {
-    org.clojure/clojure {:mvn/version "1.10.3"}
-    nrepl/nrepl {:mvn/version "0.8.3"}
-    cider/cider-nrepl {:mvn/version "0.26.0"}
+    org.clojure/clojure {:mvn/version "1.11.1"}
   }
 
   ;; Aliases
@@ -35,6 +33,9 @@
     ;; clojure -X:deps find-versions doesn't work unless this is commented...
     ;;:deps {:extra-deps {org.clojure/tools.deps.alpha {:mvn/version "0.11.922"}}}
     ;:test {:extra-paths ["test"]}
+    :nrepl {:extra-deps
+             {nrepl/nrepl {:mvn/version "1.0.0"}
+              cider/cider-nrepl {:mvn/version "0.28.5"}}}
     :new {:extra-deps {com.github.seancorfield/clj-new
                        {:mvn/version "1.2.381"}}
           :exec-fn clj-new/create
