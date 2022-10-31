@@ -103,9 +103,6 @@ super + shift + space
 super + r
   books
 
-super + f
-  kitty sh -c vifmrun
-
 super + shift + y
   ytdl
 
@@ -114,11 +111,3 @@ super + shift + t
 
 ctrl + super + shift + 6
   base64-decode
-
-ctrl + super + shift + 0
-  killall sxhkd && sxhkd -c /home/matt/.config/sxhkd/sxhkdrc.min
-#super + shift + ;
-#send window to left workspace
-#
-#super + shift + '
-#send window to right workspace
