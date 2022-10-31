@@ -51,7 +51,7 @@ cd-last-widget() {
 zle -N cd-last-widget
 bindkey '^B' cd-last-widget
 
-source $ZDOTDIR/aliasrc
+source $XDG_CONFIG_HOME/shell/aliasrc
 source $ZDOTDIR/plugins.zsh
 source $ZDOTDIR/prompt.zsh
 

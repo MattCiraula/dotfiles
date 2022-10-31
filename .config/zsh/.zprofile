@@ -4,7 +4,6 @@ export XDG_DATA_HOME=$HOME/.local/share
 export GNUPGHOME="$XDG_DATA_HOME"/gnupg
 export ZDOTDIR=/home/matt/.config/zsh
 export PATH=$PATH:$HOME/.local/bin:$HOME/scripts
-export PATH=$PATH:$XDG_CONFIG_HOME/vim/plugged/vim-iced/bin
 export GRAALVM_HOME=/usr/lib/jvm/java-11-graalvm
 export GPG_TTY=$(tty)
 
