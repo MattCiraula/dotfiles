@@ -1,6 +1,7 @@
 alias cp='cp -i'
 alias mv='mv -i'
 alias ls='ls -h --color=auto'
+alias lh='ls -lh'
 alias newsboat='newsboat -u $HOME/.config/newsboat/urls'
 alias recon='nmcli connection up Zoom6221'
 alias rs='redshift -o 100K'
@@ -9,7 +10,7 @@ alias vmacs='emacs --with-profile vmacs'
 alias chx='chmod +x'
 alias vim='nvim'
 alias keys="setxkbmap -option caps:ctrl_modifier; xcape -e 'Caps_Lock=Escape'"
-alias nrepl="clj -M -m nrepl.cmdline --middleware '[cider.nrepl/cider-middleware]' --interactive"
+alias nrepl="clj -M:nrepl -m nrepl.cmdline --middleware '[cider.nrepl/cider-middleware]' --interactive"
 alias trash="rm -rf ~/.local/share/vifm/Trash/*"
 alias dfh='df . -h'
-alias rmbrave='rm /home/matt/.config/BraveSoftware/Brave-Browser/SingletonLock'
+alias pless='ps aux | less'
