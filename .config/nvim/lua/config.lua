@@ -63,12 +63,23 @@ vim.api.nvim_set_keymap("n", "<Leader>gP", ":Git push<CR>", { noremap = true, si
 vim.api.nvim_set_keymap("n", "<Leader>gs", ":Telescope git_status<CR>", { noremap = true, silent = true })
 vim.api.nvim_set_keymap("n", "<Leader>gS", ":Gitsigns stage_buffer<CR>", { noremap = true, silent = true })
 
-vim.api.nvim_set_keymap("n", "<Leader>h", "<C-w>h", { noremap = true, silent = true })
-vim.api.nvim_set_keymap("n", "<Leader>j", "<C-w>j", { noremap = true, silent = true })
-vim.api.nvim_set_keymap("n", "<Leader>k", "<C-w>k", { noremap = true, silent = true })
-vim.api.nvim_set_keymap("n", "<Leader>l", "<C-w>l", { noremap = true, silent = true })
+--vim.api.nvim_set_keymap("n", "<Leader>h", "<C-w>h", { noremap = true, silent = true })
+vim.api.nvim_set_keymap("n", "<C-h>", "<C-w>h", { noremap = true, silent = true })
+--vim.api.nvim_set_keymap("n", "<Leader>j", "<C-w>j", { noremap = true, silent = true })
+vim.api.nvim_set_keymap("n", "<C-j>", "<C-w>j", { noremap = true, silent = true })
+--vim.api.nvim_set_keymap("n", "<Leader>k", "<C-w>k", { noremap = true, silent = true })
+vim.api.nvim_set_keymap("n", "<C-k>", "<C-w>k", { noremap = true, silent = true })
+--vim.api.nvim_set_keymap("n", "<Leader>l", "<C-w>l", { noremap = true, silent = true })
+vim.api.nvim_set_keymap("n", "<C-l>", "<C-w>l", { noremap = true, silent = true })
+--TODO: FIXME
+vim.api.nvim_set_keymap("n", "L", ":bnext<CR>", { noremap = true, silent = true })
+vim.api.nvim_set_keymap("n", "H", ":bprevious<CR>", { noremap = true, silent = true })
 
 vim.api.nvim_set_keymap("n", "<Leader>n", ":set number!<CR> :set relativenumber!<CR>", { noremap = true, silent = true})
+
+vim.api.nvim_set_keymap("n", "<Leader>oc", ":edit ~/.config/dotfiles/.config/nvim/lua/config.lua<CR>", { noremap = true, silent = true })
+
+vim.api.nvim_set_keymap("n", "<Leader>t", ":NvimTreeToggle<CR>", { noremap = true, silent = true })
 
 -- lua line setup
 opt.laststatus = 3
@@ -76,8 +87,11 @@ opt.laststatus = 3
 -- git signs setup
 require('gitsigns').setup()
 
+require'nvim-tree'.setup()
+
 -- netrw config
 vim.g.netrw_banner = 0
+-- TODO: find out why lua hates this string
 vim.cmd([[let g:netrw_list_hide= '.*\.swp$,.DS_Store,*/tmp/*,*.so,*.swp,*.zip,*.git,^\.\.\=/\=$']])
 vim.api.nvim_set_keymap("n", "-", ":Explore<CR>", { noremap = true, silent = true })
 vim.api.nvim_set_keymap("n", "_", ":Lexplore<CR>", { noremap = true, silent = true })
