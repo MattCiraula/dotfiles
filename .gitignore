@@ -2,3 +2,7 @@
 \#*\#
 .config/dircolors/
 .config/nvim/oldconfig/
+example.yml
+.clj-kondo/
+.cpcache/
+.lsp/
