@@ -115,9 +115,9 @@
   :init
   (vertico-mode))
 
-(use-package save-hist
+(use-package savehist
   :init
-  (save-hist-mode))
+  (savehist-mode))
 
 ;; From vertico github...
 ;; A few more useful configurations...
@@ -146,6 +146,17 @@
 
   ;; Enable recursive minibuffers
   (setq enable-recursive-minibuffers t))
+
+;; Enable rich annotations using the Marginalia package
+(use-package marginalia
+  :init
+  (marginalia-mode))
+
+(use-package orderless
+  :ensure t
+  :custom
+  (completion-styles '(orderless basic))
+  (completion-category-overrides '((file (styles basic partial-completion)))))
 
 (use-package consult
   ;; Replace bindings. Lazily loaded due by `use-package'.
