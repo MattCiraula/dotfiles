@@ -2,7 +2,7 @@
 pgrep -x sxhkd > /dev/null || sxhkd &
 
 bspc config automatic_scheme spiral
-#bspc config border_width 2
+bspc config border_width 2
 bspc config border_width 0
 bspc config window_gap 5
 
