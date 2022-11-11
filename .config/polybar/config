@@ -1,6 +1,5 @@
 [colors]
 background = #1d2021
-;focused-bg = #d78821
 focused-fg = #000000
 occupied-bg = #666666
 foreground = #dddddd
