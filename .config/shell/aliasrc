@@ -12,3 +12,4 @@ alias keys="setxkbmap -option caps:ctrl_modifier; xcape -e 'Caps_Lock=Escape'"
 alias nrepl="clj -M -m nrepl.cmdline --middleware '[cider.nrepl/cider-middleware]' --interactive"
 alias trash="rm -rf ~/.local/share/vifm/Trash/*"
 alias dfh='df . -h'
+alias rmbrave='rm /home/matt/.config/BraveSoftware/Brave-Browser/SingletonLock'

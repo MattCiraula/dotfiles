@@ -1,4 +1,4 @@
-;; initialize package sources
+;initialize package sources
 (require 'package)
 
 (setq package-archives '(("melpa" . "https://melpa.org/packages/")
@@ -24,12 +24,9 @@
 (tooltip-mode -1)
 (menu-bar-mode -1)
 (setq visible-bell t)
-
-;; HOW THE FUCK DOES THE GOD DAMN CLIPBOARD WORK
-;(setq x-select-enable-clipboard t)
-
-;; make escape work like it should
-(global-set-key (kbd "<escape>") 'keyboard-escape-quit)
+(setq fill-column 80)
+(setq scroll-step 1)
+(setq scroll-conservatively 10000)
 
 ;; display line numbers
 (column-number-mode)
@@ -39,9 +36,12 @@
 ;; disable line numbers in some contexts
 (dolist (mode
    '(org-mode-hook
-    term-mode-hook
-    eshell-mode-hook
-    pdf-view-mode-hook))
+     term-mode-hook
+     info-mode-hook
+     doc-view-mode-hook
+     eshell-mode-hook
+     dired-mode-hook
+     pdf-view-mode-hook))
   ;; TODO: turn off global-hl-line-mode?
   (add-hook mode (lambda () (display-line-numbers-mode 0))))
 
@@ -51,263 +51,155 @@
 ;; follow version controlled symlinks without asking
 (setq vc-follow-symlinks t)
 
-;; diminish allows hiding modes in the modeline
-(use-package diminish)
-
-(use-package telephone-line
-  :init (telephone-line-mode)
-  :custom
-  (telephone-line-primary-left-separator 'telephone-line-identity-left)
-  (telephone-line-secondary-left-separator 'telephone-line-identity-hollow-left)
-  (telephone-line-primary-right-separator 'telephone-line-identity-right)
-  (telephone-line-secondary-right-separator 'telephone-line-identity-hollow-right))
-
 (use-package doom-themes
-  :init (load-theme 'doom-gruvbox t))
-
-(use-package all-the-icons)
+  :init
+  (load-theme 'doom-gruvbox t))
 
 (setq backup-directory-alist `(("." . ,(expand-file-name "tmp/backups/" user-emacs-directory))))
 
 ;; set tab width
 (setq-default tab-width 2)
-(setq-default evil-shift-width tab-width)
 
 ;; use spaces for indentation
 (setq-default indent-tabs-mode nil)
 
-(use-package rainbow-delimiters
-  :hook (prog-mode . rainbow-delimiters-mode))
-
-(use-package ivy
-    :init (ivy-mode)
-    :diminish ivy-mode
-  :bind (("C-s" . swiper)
-         :map ivy-minibuffer-map
-         ("TAB" . ivy-alt-done)	
-         ("C-l" . ivy-alt-done)
-         ("C-j" . ivy-next-line)
-         ("C-k" . ivy-previous-line)
-         ("RET" . ivy-immediate-done)
-         :map ivy-switch-buffer-map
-         ("C-k" . ivy-previous-line)
-         ("C-l" . ivy-done)
-         ("C-d" . ivy-switch-buffer-kill)
-         :map ivy-reverse-i-search-map
-         ("C-k" . ivy-previous-line)
-         ("C-d" . ivy-reverse-i-search-kill)))
-
-; enable fuzzy finding EVERYWHERE
-;(setq ivy-re-builders-alist
-      ;'((t . ivy--regex-fuzzy)))
-
-(use-package all-the-icons-ivy-rich
-  :ensure t
-  :init (all-the-icons-ivy-rich-mode 1))
-
-(use-package ivy-rich
-  :init
-  (ivy-rich-mode 1))
-
-(use-package ivy-hydra
-  :defer t
-  :after hydra)
-
-(use-package counsel
-  :bind (("M-x" . counsel-M-x)
-          ("C-x b" . counsel-ibuffer)
-          ("C-x C-f" . counsel-find-file)
-          ("C-x z" . counsel-fzf)
-          :map minibuffer-local-map
-          ("C-r" . 'counsel-minibuffer-history)))
-
-(use-package helpful
-  :custom
-  (counsel-describe-function-function #'helpful-callable)
-  (counsel-describe-variable-function #'helpful-variable)
-  :bind
-  ([remap describe-function] . counsel-describe-function)
-  ([remap describe-command] . helpful-command)
-  ([remap describe-variable] . counsel-describe-variable)
-  ([remap describe-key] . helpful-key))
-
-(use-package ripgrep)
-
-(use-package helm)
-  ;(use-package helm-config)
-  (global-set-key (kbd "C-c h") 'helm-command-prefix)
-  (global-unset-key (kbd "C-x c"))
-  (define-key helm-map (kbd "<tab>") 'helm-execute-persistent-action) ; rebind tab to run persistent action
-(define-key helm-map (kbd "C-i") 'helm-execute-persistent-action) ; make TAB work in terminal
-(define-key helm-map (kbd "C-z")  'helm-select-action) ; list actions using C-z
-
 (use-package evil
   :init
-  (setq evil-want-integration t)
-  (setq evil-want-keybinding nil)
-  (setq evil-want-C-u-scroll t)
-  (setq evil-want-C-i-jump nil)
-  :config
-  (evil-mode 1)
-  (define-key evil-insert-state-map (kbd "C-g") 'evil-normal-state)
-  (define-key evil-insert-state-map (kbd "C-h") 'evil-delete-backward-char-and-join)
+  (evil-mode))
 
-  ;; Use visual line motions even outside of visual-line-mode buffers
-  (evil-global-set-key 'motion "j" 'evil-next-visual-line)
-  (evil-global-set-key 'motion "k" 'evil-previous-visual-line)
+(use-package vertico
+  :init
+  (vertico-mode))
 
-  (evil-set-initial-state 'messages-buffer-mode 'normal)
-  (evil-set-initial-state 'dashboard-mode 'normal))
+(use-package savehist
+  :init
+  (savehist-mode))
 
-(use-package evil-collection
-  :after evil
-  :config
-  (evil-collection-init))
+(use-package corfu
+  :custom
+  (corfu-cycle t)
+  (corfu-preview-current nil)
+  :init
+  (global-corfu-mode))
 
-(use-package general
-  :config
-  (general-create-definer matt/leader-keys
-        :keymaps '(normal insert visual emacs)
-        :prefix "SPC"
-        :global-prefix "C-SPC")
-  (matt/leader-keys
-    "b"   '(:ignore t :which-key "buffers")
-    "bb"  '(hydra/cycle-buffers/body :which-key "cycle buffers")
-    "bc"  'kill-buffer-and-window
-    "bk"  'kill-buffer
-    "bn"  'next-buffer
-    "bp"  'previous-buffer
-    "br"  'revert-buffer-noauto
-    "bs"  'counsel-switch-buffer
-    "bS"  'counsel-switch-buffer-other-window
-    "bx"  'kill-this-buffer
+;; TODO: install from git repo
+;; https://codeberg.org/akib/emacs-corfu-terminal
+;; (use-package corfu-terminal
+;;   :init
+;;   (unless (display-graphic-p)
+;;     (corfu-terminal-mode +1)))
 
-    "d"   '(:ignore t :which-key "dired")
-    "dc"  'dired-config
-    "dd"  'dired
-    "dh"  'dired-home
-    "dj"  'dired-jump
-    "dJ"  'dired-jump-other-window
-    "dp"  'dired-projects
+(global-set-key (kbd "C-<tab>") 'completion-at-point)
 
-    "f"   '(:ignore t :which-key "find")
-    "fc"  '(counsel-fzf-config-files :which-key "fzf config dir")
-    "ff"  'find-file
-    "fF"  'find-file-other-window
-    "fg"  '(counsel-rg :which-key "grep")
-    "fz"  'counsel-fzf
+(use-package yasnippet
+  :init
+  (yas-global-mode 1))
 
-    "g"   '(:ignore t :which-key "git")
-    "gs"  'magit-status
-    "gd"  'magit-diff-unstaged
-    "gc"  '(:ignore t :which-key "checkout")
-    "gcf"  'magit-file-checkout
-    "gcb"  'magit-branch-or-checkout
-    "gl"  '(:ignore t :which-key "log")
-    "glc" 'magit-log-current
-    "glf" 'magit-log-buffer-file
-    "gb"  'magit-branch
-    "gP"  'magit-push-current
-    "gp"  'magit-pull-branch
-    "gf"  'magit-fetch
-    "gF"  'magit-fetch-all
-    "gr"  'magit-rebase
+(use-package yasnippet-snippets)
 
-    "h"   'evil-window-left
-    "j"   'evil-window-down
-    "k"   'evil-window-up
-    "l"   'evil-window-right
+;; From vertico github...
+;; A few more useful configurations...
+(use-package emacs
+  :init
+  ;; Add prompt indicator to `completing-read-multiple'.
+  ;; We display [CRM<separator>], e.g., [CRM,] if the separator is a comma.
+  (setq tab-always-indent 'complete)
 
-    "o"   '(:ignore t :which-key "open")
-    "oc"  '(open-org-config :which-key "open emacs config")
-    "oe"  'eshell
-    "oo"  '(:ignore t :which-key "open in other window")
-    ;; TODO: implement open in other window keys
+  (defun crm-indicator (args)
+    (cons (format "[CRM%s] %s"
+                  (replace-regexp-in-string
+                   "\\`\\[.*?]\\*\\|\\[.*?]\\*\\'" ""
+                   crm-separator)
+                  (car args))
+          (cdr args)))
+  (advice-add #'completing-read-multiple :filter-args #'crm-indicator)
 
-    "p"   '(:ignore t :which-key "projectile")
-    "pc"  'projectile-compile-project
-    "pd"  'projectile-dired
-    "pD"  'projectile-dired-other-window
-    "pe"  'projectile-run-eshell
-    "pf"  'projectile-find-file
-    "pF"  'projectile-find-file-other-window
-    "pg"  'projectile-ripgrep
-    "pk"  'projectile-kill-buffers
-    "pn"  'projectile-next-project-buffer
-    "pp"  'projectile-previous-project-buffer
-    "pr"  'projectile-run-project
-    "ps"  'projectile-switch-project
-    "pt"  'projectile-test-project
+  ;; Do not allow the cursor in the minibuffer prompt
+  (setq minibuffer-prompt-properties
+        '(read-only t cursor-intangible t face minibuffer-prompt))
+  (add-hook 'minibuffer-setup-hook #'cursor-intangible-mode))
 
-    "w"   '(:ignore t :which-key "windows")
-    "wc"  'evil-window-delete
-    "wh"  'evil-window-left
-    "wj"  'evil-window-down
-    "wk"  'evil-window-up
-    "wl"  'evil-window-right
-    "wr"  '(hydra/resize-window/body :which-key "resize window")
-    "ws"  'evil-window-split
-    "wv"  'evil-window-vsplit
-    "ww"  (lambda nil (interactive)
-            (evil-window-set-height 30))
+;; Enable rich annotations using the Marginalia package
+(use-package marginalia
+  :init
+  (marginalia-mode))
 
-    "z"   '(hydra/text-zoom/body :which-key "zoom text")
-    ";"   '(eval-config :which-key "eval config")))
+(use-package orderless
+  :ensure t
+  :custom
+  (completion-styles '(orderless basic))
+  (completion-category-overrides '((file (styles basic partial-completion)))))
 
+(use-package consult
+  :bind (;; C-x bindings (ctl-x-map)
+         ("C-x M-:" . consult-complex-command)     ;; orig. repeat-complex-command
+         ("C-x b" . consult-buffer)                ;; orig. switch-to-buffer
+         ("C-x 4 b" . consult-buffer-other-window) ;; orig. switch-to-buffer-other-window
+         ("C-x 5 b" . consult-buffer-other-frame)  ;; orig. switch-to-buffer-other-frame
+         ("C-x r b" . consult-bookmark)            ;; orig. bookmark-jump
+         ("C-x p b" . consult-project-buffer)      ;; orig. project-switch-to-buffer
+         ("C-s" . consult-line)
+         ;; Custom M-# bindings for fast register access
+         ("M-#" . consult-register-load)
+         ("M-'" . consult-register-store)          ;; orig. abbrev-prefix-mark (unrelated)
+         ("C-M-#" . consult-register)
+         ;; Other custom bindings
+         ("M-y" . consult-yank-pop)                ;; orig. yank-pop
+         ("<help> a" . consult-apropos)            ;; orig. apropos-command
+         ;; M-g bindings (goto-map)
+         ("M-g e" . consult-compile-error)
+         ("M-g f" . consult-flymake)               ;; Alternative: consult-flycheck
+         ("M-g g" . consult-goto-line)             ;; orig. goto-line
+         ("M-g M-g" . consult-goto-line)           ;; orig. goto-line
+         ("M-g o" . consult-outline)               ;; Alternative: consult-org-heading
+         ("M-g m" . consult-mark)
+         ("M-g k" . consult-global-mark)
+         ("M-g i" . consult-imenu)
+         ("M-g I" . consult-imenu-multi)
+         ;; M-s bindings (search-map)
+         ("M-s d" . consult-find)
+         ("M-s D" . consult-locate)
+         ("M-s g" . consult-grep)
+         ("M-s G" . consult-git-grep)
+         ("M-s r" . consult-ripgrep)
+         ("M-s l" . consult-line)
+         ("M-s L" . consult-line-multi)
+         ("M-s m" . consult-multi-occur)
+         ("M-s k" . consult-keep-lines)
+         ("M-s u" . consult-focus-lines)
+         ;; Isearch integration
+         ("M-s e" . consult-isearch-history)
+         :map isearch-mode-map
+         ("M-e" . consult-isearch-history)         ;; orig. isearch-edit-string
+         ("M-s e" . consult-isearch-history)       ;; orig. isearch-edit-string
+         ("M-s l" . consult-line)                  ;; needed by consult-line to detect isearch
+         ("M-s L" . consult-line-multi)            ;; needed by consult-line to detect isearch
+         ;; Minibuffer history
+         :map minibuffer-local-map
+         ("M-s" . consult-history)                 ;; orig. next-matching-history-element
+         ("M-r" . consult-history))                ;; orig. previous-matching-history-element
 
-; helper functions
-; TODO: decide if I should use lambdas or helper functions
-(defun counsel-fzf-config-files ()
-  (interactive)
-  (counsel-fzf nil (getenv "XDG_CONFIG_HOME")))
+  ;; Enable automatic preview at point in the *Completions* buffer. This is
+  ;; relevant when you use the default completion UI.
+  :hook (completion-list-mode . consult-preview-at-point-mode)
 
-(defun open-org-config ()
-  (interactive)
-  (find-file (concat (getenv "XDG_CONFIG_HOME") "/emacs/emacs.org")))
+  ;; The :init configuration is always executed (Not lazy)
+  :init
+  ;; Optionally configure the register formatting. This improves the register
+  ;; preview for `consult-register', `consult-register-load',
+  ;; `consult-register-store' and the Emacs built-ins.
+  (setq register-preview-delay 0.5
+        register-preview-function #'consult-register-format)
 
-(defun revert-buffer-noauto ()
-  (interactive)
-  (revert-buffer nil t t)) ;TODO: figure out args
+  ;; Optionally tweak the register preview window.
+  ;; This adds thin lines, sorting and hides the mode line of the window.
+  (advice-add #'register-preview :override #'consult-register-window)
 
-(defun dired-home ()
-  (interactive)
-  (dired (getenv "HOME")))
+  ;; Use Consult to select xref locations with preview
+  (setq xref-show-xrefs-function #'consult-xref
+        xref-show-definitions-function #'consult-xref))
 
-(defun dired-config ()
-  (interactive)
-  (dired (getenv "XDG_CONFIG_HOME")))
-
-(defun dired-projects ()
-  (interactive)
-  (dired "/home/matt/projects"))
-
-(defun eval-config nil (interactive)
-  (load-file (getenv "HOME") "/.emacs.d/init.el"))
-
-(use-package hydra
-  :defer 1)
-
-(defhydra hydra/cycle-buffers ()
-  "cycle buffers"
-  ("j" next-buffer)
-  ("k" previous-buffer)
-  ("x" kill-this-buffer)
-  ("c" kill-buffer-and-window)
-  ("SPC" nil "quit" :exit t))
-
-(defhydra hydra/resize-window (:timeout 15)
-  "resize window"
-  ("=" evil-window-increase-height)
-  ("-" evil-window-decrease-height)
-  ("." evil-window-increase-width)
-  ("," evil-window-decrease-width)
-  ("SPC" nil "quit" :exit t))
-
-(defhydra hydra/text-zoom (:timeout 10)
-  "scale text"
-  ("j" text-scale-increase "in")
-  ("k" text-scale-decrease "out")
-  ("SPC" nil "quit" :exit t))
+;; (use-package ripgrep)
 
 (use-package which-key
   :init (which-key-mode)
@@ -320,198 +212,139 @@
   :config (projectile-mode)
   :bind-keymap ("C-c p" . projectile-command-map)
   :init
-  (when (file-directory-p "~/projects")
-    (setq projectile-project-search-path '("~/projects")))
+  (when (file-directory-p "~/programming")
+    (setq projectile-project-search-path '("~/programming")))
   (setq projectile-switch-project-action #'projectile-dired))
 
 (use-package magit
   :custom
   (magit-display-buffer-function #'magit-display-buffer-same-window-except-diff-v1))
 
-;(use-package evil-magit
-  ;:after magit)
-
-(use-package all-the-icons-dired)
-
-(use-package dired-single
-  :defer t)
-
-(use-package dired-ranger
-  :defer t)
-
 (use-package dired
   :ensure nil
-  :config
+ :config
   (setq dired-listing-switches "-ahgo --group-directories-first"))
 
-(add-hook 'dired-mode-hook
-        (lambda ()
-          (all-the-icons-dired-mode 1)))
+(use-package sly-asdf)
+(use-package sly-quicklisp)
 
-(evil-collection-define-key 'normal 'dired-mode-map
-  "h" 'dired-single-up-directory
-  "l" 'dired-single-buffer
-  "y" 'dired-ranger-copy
-  "X" 'dired-ranger-move
-  "p" 'dired-ranger-paste
-  ;"j" 'peep-dired-next-file
-  ;"k" 'peep-dired-prev-file
-)
-
-(use-package slime)
-(setq inferior-lisp-program "clisp")
-(use-package lispy)
-(use-package evil-lispy)
-(electric-pair-mode)
-
-;(use-package scheme-mode
-    ;:ensure nil)
-
-  (use-package racket-mode)
-  (setq scheme-program-name "/usr/bin/racket")
-
-  (use-package geiser-racket)
-
-  (use-package geiser)
-    ;:init
-    ;(setq geiser-default-implementation 'racket))
-(setq geiser-default-implementation 'racket)
-
-(use-package flycheck-clj-kondo
-  :ensure t)
-(use-package clojure-mode
-  :ensure t
-  :hook (clojure-mode . lsp-deferred)
+(use-package sly
   :config
-  (require 'flycheck-clj-kondo))
-(use-package queue)
+  (sly-symbol-completion-mode -1)
+  (setq sly-xref--popup-method 'consult-xref)
+  (setq inferior-lisp-program "sbcl"))
+
+(use-package lispy
+  :hook
+  ((lisp-mode . lispy-mode)
+   (emacs-lisp-mode . lispy-mode)
+   (scheme-mode . lispy-mode)
+   (clojure-mode . lispy-mode)))
+
 (use-package cider
-  :hook (cider-mode . (lambda () (add-hook 'before-save-hook
-                                            'cider-format-buffer
-                                            t
-                                            t)))
-  :bind (("C-c j" . cider-jack-in-clj)
-          ("C-c C-j" . cider-jack-in-clj)))
+  :hook
+  ((clojure-mode . cider-mode)))
 
-(use-package python-mode
-  :ensure t
-  ;:hook (python-mode . lsp-deferred) 
-  :custom (python-shell-interpreter "python3"))
+(use-package geiser
+  :init
+  (setq geiser-default-implementation 'guile))
 
-; needed for org-babel
-(require 'ob-js)
+(use-package geiser-guile)
 
-(use-package lsp-mode
-      :commands (lsp lsp-deferred)
-      :hook (lsp-mode . matt/lsp-mode-setup)
-      :init
-      (setq lsp-keymap-prefix "C-c l")
-      :config
-      (lsp-enable-which-key-integration t))
+(use-package geiser-racket)
 
-    (defun matt/lsp-mode-setup ()
-      (setq lsp-headerline-breadcrumb-ssegments '(path-up-to-project file symbols))
-      (lsp-headerline-breadcrumb-mode))
+(use-package rustic)
 
-    (use-package company
-      :after lsp-mode
-      :hook (lsp-mode . company-mode)
-;      :bind (:map company-active-map
-;              ("<tab>" . company-complete-selection))
-;            (:map lsp-mode-map
-;              ("<tab>" . company-indent-or-complete-common))
-      :custom
-      (company-minimum-prefix-length 1)
-      (company-idle-delay 0.0))
+(use-package eglot)
 
-    (use-package company-box
-      :hook (company-mode . company-box-mode))
-
-    (use-package lsp-ui
-      :hook
-      (lsp-mode . lsp-ui-mode)
-      :config
-      (setq lsp-ui-doc-enable nil)
-  ;   (setq lsp-ui-doc-position 'bottom)
-      (setq lsp-ui-sideline-show-code-actions nil)
-      ;; FIXME?
-      (setq lsp-ui-sideline-show-diagnostics t))
-
-(defun efs/org-mode-setup ()
-  (org-indent-mode)
-  (variable-pitch-mode 1)
-  (visual-line-mode 1))
-
-;; Org Mode Configuration ------------------------------------------------------
-
-(defun efs/org-font-setup ()
-  ;; Replace list hyphen with dot
-  (font-lock-add-keywords 'org-mode
-                          '(("^ *\\([-]\\) "
-                             (0 (prog1 () (compose-region (match-beginning 1) (match-end 1) "•"))))))
-
-  ;; Set faces for heading levels
-  (dolist (face '((org-level-1 . 1.2)
-                  (org-level-2 . 1.1)
-                  (org-level-3 . 1.05)
-                  (org-level-4 . 1.0)
-                  (org-level-5 . 1.1)
-                  (org-level-6 . 1.1)
-                  (org-level-7 . 1.1)
-                  (org-level-8 . 1.1)))
-    (set-face-attribute (car face) nil :font "Cantarell" :weight 'regular :height (cdr face)))
-
-  ;; Ensure that anything that should be fixed-pitch in Org files appears that way
-  (set-face-attribute 'org-block nil :foreground nil :inherit 'fixed-pitch)
-  (set-face-attribute 'org-code nil   :inherit '(shadow fixed-pitch))
-  (set-face-attribute 'org-table nil   :inherit '(shadow fixed-pitch))
-  (set-face-attribute 'org-verbatim nil :inherit '(shadow fixed-pitch))
-  (set-face-attribute 'org-special-keyword nil :inherit '(font-lock-comment-face fixed-pitch))
-  (set-face-attribute 'org-meta-line nil :inherit '(font-lock-comment-face fixed-pitch))
-  (set-face-attribute 'org-checkbox nil :inherit 'fixed-pitch))
-
-(use-package org
-  :hook (org-mode . efs/org-mode-setup)
-  :config
-  (setq org-ellipsis " ▾"
-        org-hide-emphasis-markers t)
-  (efs/org-font-setup))
-
-(use-package org-bullets
-  :after org
-  :hook (org-mode . org-bullets-mode)
-  :custom
-  (org-bullets-bullet-list '("◉" "○" "●" "○" "●" "○" "●")))
-
-(defun efs/org-mode-visual-fill ()
-  (setq visual-fill-column-width 100
-        visual-fill-column-center-text t)
-  (visual-fill-column-mode 1))
-
-(use-package visual-fill-column
-  :hook (org-mode . efs/org-mode-visual-fill))
-
-(org-babel-do-load-languages
-  'org-babel-load-languages
-  '((emacs-lisp . t)
-    (lisp . t)
-    (scheme . t)
-    (python . t)
-    (js . t)
-    (clojure . t)
-    ))
-
-(setq org-confirm-babel-evaluate nil)
-
-(with-eval-after-load 'org
-  ;; This is needed as of Org 9.2
-  (require 'org-tempo)
-
-  (add-to-list 'org-structure-template-alist '("sh" . "src shell"))
-  (add-to-list 'org-structure-template-alist '("el" . "src emacs-lisp"))
-  (add-to-list 'org-structure-template-alist '("cl" . "src lisp"))
-  (add-to-list 'org-structure-template-alist '("sc" . "src scheme"))
-  (add-to-list 'org-structure-template-alist '("js" . "src js"))
-  (add-to-list 'org-structure-template-alist '("clj" . "src clojure"))
-  (add-to-list 'org-structure-template-alist '("rs" . "src rust"))
-  (add-to-list 'org-structure-template-alist '("py" . "src python")))
+(custom-set-variables
+ ;; custom-set-variables was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ '(connection-local-criteria-alist
+   '(((:application tramp)
+      tramp-connection-local-default-system-profile tramp-connection-local-default-shell-profile)) t)
+ '(connection-local-profile-alist
+   '((tramp-connection-local-darwin-ps-profile
+      (tramp-process-attributes-ps-args "-acxww" "-o" "pid,uid,user,gid,comm=abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ" "-o" "state=abcde" "-o" "ppid,pgid,sess,tty,tpgid,minflt,majflt,time,pri,nice,vsz,rss,etime,pcpu,pmem,args")
+      (tramp-process-attributes-ps-format
+       (pid . number)
+       (euid . number)
+       (user . string)
+       (egid . number)
+       (comm . 52)
+       (state . 5)
+       (ppid . number)
+       (pgrp . number)
+       (sess . number)
+       (ttname . string)
+       (tpgid . number)
+       (minflt . number)
+       (majflt . number)
+       (time . tramp-ps-time)
+       (pri . number)
+       (nice . number)
+       (vsize . number)
+       (rss . number)
+       (etime . tramp-ps-time)
+       (pcpu . number)
+       (pmem . number)
+       (args)))
+     (tramp-connection-local-busybox-ps-profile
+      (tramp-process-attributes-ps-args "-o" "pid,user,group,comm=abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ" "-o" "stat=abcde" "-o" "ppid,pgid,tty,time,nice,etime,args")
+      (tramp-process-attributes-ps-format
+       (pid . number)
+       (user . string)
+       (group . string)
+       (comm . 52)
+       (state . 5)
+       (ppid . number)
+       (pgrp . number)
+       (ttname . string)
+       (time . tramp-ps-time)
+       (nice . number)
+       (etime . tramp-ps-time)
+       (args)))
+     (tramp-connection-local-bsd-ps-profile
+      (tramp-process-attributes-ps-args "-acxww" "-o" "pid,euid,user,egid,egroup,comm=abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ" "-o" "state,ppid,pgid,sid,tty,tpgid,minflt,majflt,time,pri,nice,vsz,rss,etimes,pcpu,pmem,args")
+      (tramp-process-attributes-ps-format
+       (pid . number)
+       (euid . number)
+       (user . string)
+       (egid . number)
+       (group . string)
+       (comm . 52)
+       (state . string)
+       (ppid . number)
+       (pgrp . number)
+       (sess . number)
+       (ttname . string)
+       (tpgid . number)
+       (minflt . number)
+       (majflt . number)
+       (time . tramp-ps-time)
+       (pri . number)
+       (nice . number)
+       (vsize . number)
+       (rss . number)
+       (etime . number)
+       (pcpu . number)
+       (pmem . number)
+       (args)))
+     (tramp-connection-local-default-shell-profile
+      (shell-file-name . "/bin/sh")
+      (shell-command-switch . "-c"))
+     (tramp-connection-local-default-system-profile
+      (path-separator . ":")
+      (null-device . "/dev/null"))) t)
+ '(custom-safe-themes
+   '("bcfeecf5f2ee0bbc64450f7c5155145d8d2c590b1310a898c505f48b4b5f4c75" "f5f3921b9cec1b37758ba865127d773f8f5e4816e63712af7582b447acfa5326" "d47e82e61cffed27dd2aef3b614f6dd727776f6bcb92e738e89056b325a5aeab" "c6b317b294f9e0ecf7290a6d76b4c96ffd52213cdcb3fdad5db29141c63866cf" "032426ec19e515fd3a54b38016a1c5e4ec066be3230198cb3df82d05630a02ed" "910b36cacb8486580842582661ab2f16d8e05e6ec081dcaa141e0ca98ee5e9c2" "13f343f7d098365848ba4366801a9ae91c35faea85b017818fd4d07dfd18de61" "20d3ce5f5cb95716edca608ef7bbc27d9f8d66c9a51200f7be3f08c107810f3e" "68b35e92f9daa37685218bd11aa5307140a0ec4c8fd17142a83457619e7b1240" "49887e6f0c666dfc10fad4c23c7a83a176cb296968648c02b85deec25bb11103" "02790c735d32ad3b28c630329fdfc503ea62077d088b0c52302ab61e5a3b037e" "aee4c6b492ad130f13868464e4d7f2b2846de9b7f0d2933499c907f47dc010f4" "2141b59c9b098b476a7e20f7a621985b5d89544ae22a8d4b79b574f1203b6496" "e0aaf54e0194bd9f452ae36f0012b23d3f82d2092e2b800cc07e0e73f4ac131f" "f126b518f12b4f6bd50808143f7bd26c1d47de25d90170d3d632a46c2a08a1af" "41bbaed6a17405ee6929c7e1f8035cffd05d0ebf3f08ce388da0e92c63fb6cef" "e5a748cbefd483b74b183d7da4fca6228207a6bf9be9792dc85403a186724e1f" "e3daa8f18440301f3e54f2093fe15f4fe951986a8628e98dcd781efbec7a46f2" "bbb13492a15c3258f29c21d251da1e62f1abb8bbd492386a673dcfab474186af" "5b9a45080feaedc7820894ebbfe4f8251e13b66654ac4394cb416fef9fdca789" "7fd8b914e340283c189980cd1883dbdef67080ad1a3a9cc3df864ca53bdc89cf" "eb277447cd8fd1c99b32dc18cb7c17916ad4b58d38d2e924f1d88e1e7befe7e6" "098bc2b3038a9a58b2f7034262b54f56a547d8d9a09ebe5b7a4a5fb6fbcaeae5" default))
+ '(package-selected-packages
+   '(rustic yasnippet-snippets yasnippet eglot desktop-environment which-key vertico use-package sly ripgrep rainbow-delimiters projectile pdf-tools orderless marginalia magit lispy geiser-racket geiser-guile exwm evil-surround embark-consult doom-themes corfu cider)))
+(custom-set-faces
+ ;; custom-set-faces was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ )

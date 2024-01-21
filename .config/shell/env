@@ -5,7 +5,7 @@ export GNUPGHOME="$XDG_DATA_HOME"/gnupg
 export ZDOTDIR=/home/matt/.config/zsh
 export PATH=$PATH:$HOME/.local/bin:$HOME/scripts
 export PATH=$PATH:$XDG_CONFIG_HOME/vim/plugged/vim-iced/bin
-export GRAALVM_HOME=/usr/lib/jvm/java-11-graalvm
+export PATH=$PATH:$HOME/.roswell/bin
 export GPG_TTY=$(tty)
 export TERMINAL=alacritty
 export BROWSER=librewolf
@@ -14,14 +14,4 @@ export FILE_MANAGER=vifm
 export LESSHISTFILE=/dev/null
 export WALLPAPER=$HOME/images/wallpapers/yak.jpg
 export LANG=en_US.UTF-8
-
-# set colors
-eval $(dircolors -b)
-
-export LESS_TERMCAP_mb="[35m" # magenta
-export LESS_TERMCAP_md="[33m" # yellow
-export LESS_TERMCAP_me=""       # 0m
-export LESS_TERMCAP_se=""       # 0m
-export LESS_TERMCAP_so="[34m" # blue
-export LESS_TERMCAP_ue=""       # 0m
-export LESS_TERMCAP_us="[4m"  # underline
+source $HOME/.cargo/env

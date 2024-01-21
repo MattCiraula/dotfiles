@@ -4,20 +4,26 @@ DATA_PATH = vim.fn.stdpath "data"
 CACHE_PATH = vim.fn.stdpath "cache"
 TERMINAL = vim.fn.expand "$TERMINAL"
 
--- option config
+-- built-in config
 local opt = vim.opt
 opt.number = true
 opt.relativenumber = true
 opt.cursorline = true
-opt.tabstop = 2
-opt.shiftwidth = 2
+opt.shiftwidth = 4
+opt.tabstop = 4
+opt.smartcase = true
 opt.expandtab = true
---opt.ignorcase = true
+
+opt.splitright = true
+opt.splitbelow = true
+--opt.undodir
+--opt.undofile
+
 
 -- color config
 opt.termguicolors = true
 vim.o.background = "dark"
-vim.cmd([[colorscheme gruvbox]])
+vim.cmd([[colorscheme kanagawa]])
 
 -- map leaders
 vim.g.mapleader = " "
@@ -34,20 +40,14 @@ vim.api.nvim_set_keymap("n", "<Leader>bs", ":Telescope buffers<CR>", { noremap =
 vim.api.nvim_set_keymap("n", "<Leader>dh", ":Explore ~<CR>", { noremap = true, silent = true })
 vim.api.nvim_set_keymap("n", "<Leader>dp", ":Explore ~/projects<CR>", { noremap = true, silent = true })
 
-vim.api.nvim_set_keymap("n", "<Leader>fb", ":Telescope buffers<CR>", { noremap = true, silent = true })
 vim.api.nvim_set_keymap("n", "<Leader>fd", ":lua require(\"telescope.builtin\").find_files({cwd=\"$XDG_CONFIG_HOME/dotfiles\", hidden=true})<CR>", { noremap = true, silent = true })
 vim.api.nvim_set_keymap("n", "<Leader>ff", ":Telescope find_files<CR>", { noremap = true, silent = true })
 vim.api.nvim_set_keymap("n", "<Leader>fgb", ":Telescope git_branches<CR>", { noremap = true, silent = true })
-vim.api.nvim_set_keymap("n", "<Leader>fgc", ":Telescope git_commits<CR>", { noremap = true, silent = true })
-vim.api.nvim_set_keymap("n", "<Leader>fgC", ":Telescope git_bcommits<CR>", { noremap = true, silent = true })
-vim.api.nvim_set_keymap("n", "<Leader>fF", ":lua require(\"telescope.builtin\").find_files({cwd=\"%:p:h\"})<CR>", { noremap = true, silent = true })
-vim.api.nvim_set_keymap("n", "<Leader>fg", ":Telescope git_files<CR>", { noremap = true, silent = true })
+vim.api.nvim_set_keymap("n", "<Leader>fgc", ":Telescope git_bcommits<CR>", { noremap = true, silent = true })
+vim.api.nvim_set_keymap("n", "<Leader>fG", ":Telescope git_files<CR>", { noremap = true, silent = true })
 vim.api.nvim_set_keymap("n", "<Leader>fj", ":Telescope current_buffer_fuzzy_find<CR>", { noremap = true, silent = true })
 vim.api.nvim_set_keymap("n", "<Leader>fl", ":lua require(\"telescope.builtin\").find_files({cwd=\"%:p:h\"})<CR>", { noremap = true, silent = true })
-vim.api.nvim_set_keymap("n", "<Leader>fm", ":Telescope marks<CR>", { noremap = true, silent = true })
-vim.api.nvim_set_keymap("n", "<Leader>fp", ":lua require(\"telescope.builtin\").find_files({cwd=\"$HOME/projects\", hidden=true})<CR>", { noremap = true, silent = true })
 vim.api.nvim_set_keymap("n", "<Leader>fs", ":Telescope live_grep<CR>", { noremap = true, silent = true })
-vim.api.nvim_set_keymap("n", "<Leader>ft", ":Telescope treesitter<CR>", { noremap = true, silent = true })
 
 vim.api.nvim_set_keymap("n", "<Leader>G", ":Neogit<CR>", { noremap = true, silent = true })
 vim.api.nvim_set_keymap("n", "<Leader>gc", ":Git commit<CR>", { noremap = true, silent = true })
@@ -70,22 +70,7 @@ vim.api.nvim_set_keymap("n", "<Leader>l", "<C-w>l", { noremap = true, silent = t
 
 vim.api.nvim_set_keymap("n", "<Leader>n", ":set number!<CR> :set relativenumber!<CR>", { noremap = true, silent = true})
 
-vim.api.nvim_set_keymap("n", "<Leader>oc", ":edit ~/.config/dotfiles/.config/nvim/lua/config.lua<CR>", { noremap = true, silent = true })
-
-vim.api.nvim_set_keymap("n", "<Leader>;a", ":Telescope lsp_code_actions<CR>", { noremap = true, silent = true })
-vim.api.nvim_set_keymap("n", "<Leader>;d", ":Telescope lsp_definitions<CR>", { noremap = true, silent = true })
-vim.api.nvim_set_keymap("n", "<Leader>;i", ":Telescope lsp_implementations<CR>", { noremap = true, silent = true })
-vim.api.nvim_set_keymap("n", "<Leader>;r", ":Telescope lsp_references<CR>", { noremap = true, silent = true })
-
-vim.api.nvim_set_keymap("n", "<Leader>:", ":!clj -M:fmt<CR>", { noremap = true, silent = true })
-
 -- lua line setup
-require('lualine').setup {
-  options = {
-    component_separators = {left = '', right = ''},
-    section_separators = { left = '', right = '' },
-  },
-}
 opt.laststatus = 3
 
 -- git signs setup
@@ -100,6 +85,41 @@ vim.cmd([[
   autocmd FileType netrw nmap <buffer> h -
   autocmd FileType netrw nmap <buffer> l <CR>
 ]])
+
+-- telescope config
+require("telescope").setup {
+  extensions = {
+    ["ui-select"] = {
+      require("telescope.themes").get_dropdown {
+        -- even more opts
+      }
+
+      -- pseudo code / specification for writing custom displays, like the one
+      -- for "codeactions"
+      -- specific_opts = {
+      --   [kind] = {
+      --     make_indexed = function(items) -> indexed_items, width,
+      --     make_displayer = function(widths) -> displayer
+      --     make_display = function(displayer) -> function(e)
+      --     make_ordinal = function(e) -> string
+      --   },
+      --   -- for example to disable the custom builtin "codeactions" display
+      --      do the following
+      --   codeactions = false,
+      -- }
+    },
+
+    fzf = {
+      fuzzy = true,                    -- false will only do exact matching
+      override_generic_sorter = true,  -- override the generic sorter
+      override_file_sorter = true,     -- override the file sorter
+      case_mode = "smart_case",        -- or "ignore_case" or "respect_case"
+                                       -- the default case_mode is "smart_case"
+    },
+  }
+}
+require("telescope").load_extension("ui-select")
+require('telescope').load_extension('fzf')
 
 -- tree sitter config
 require'nvim-treesitter.configs'.setup {
@@ -119,70 +139,19 @@ require'nvim-treesitter.configs'.setup {
     enable = true,
     enable_autocmd = false,
   },
-
 }
 
--- lsp install
--- lsp config
---require'lspconfig'.bashls.setup{}
-require'lspconfig'.clojure_lsp.setup{}
---require'lspconfig'.sumneko_lua.setup{}
---require'lspconfig'.zeta_note.setup{}
---require'lspconfig'.go_lsp.setup{}
+-- autopairs set up
+local npairs = require('nvim-autopairs')
+npairs.setup {}
+_G.cmp_npairs_cr = function ()
+  return npairs.autopairs_cr()
+end
 
--- cmp config
--- TODO: not getting completions from other files included - probably need to configure clojure lsp
-local cmp = require'cmp'
-cmp.setup({
-    --[[snippet = {
-      expand = function(args)
-        vim.fn["vsnip#anonymous"](args.body)
-      end,
-    },]]--
-  mapping = {
-    ['<C-p>'] = cmp.mapping.select_prev_item(),
-    ['<C-n>'] = cmp.mapping.select_next_item(),
-    ['<C-d>'] = cmp.mapping.scroll_docs(-4),
-    ['<C-f>'] = cmp.mapping.scroll_docs(4),
-    ['<C-Space>'] = cmp.mapping.complete(),
-    ['<C-e>'] = cmp.mapping.close(),
-    ['<CR>'] = cmp.mapping.confirm {
-      behavior = cmp.ConfirmBehavior.Replace,
-      select = true,
-    },
-    ['<Tab>'] = function(fallback)
-      if vim.fn.pumvisible() == 1 then
-        vim.fn.feedkeys(vim.api.nvim_replace_termcodes('<C-n>', true, true, true), 'n')
-      --elseif luasnip.expand_or_jumpable() then
-       -- vim.fn.feedkeys(vim.api.nvim_replace_termcodes('<Plug>luasnip-expand-or-jump', true, true, true), '')
-      else
-        fallback()
-      end
-    end,
-    ['<S-Tab>'] = function(fallback)
-      if vim.fn.pumvisible() == 1 then
-        vim.fn.feedkeys(vim.api.nvim_replace_termcodes('<C-p>', true, true, true), 'n')
-      --elseif luasnip.jumpable(-1) then
-        --vim.fn.feedkeys(vim.api.nvim_replace_termcodes('<Plug>luasnip-jump-prev', true, true, true), '')
-      else
-        fallback()
-      end
-    end,
-  },
-    sources = {
-      { name = 'nvim_lsp' },
-      { name = 'conjure' },
-      --...
-    }
-})
+vim.api.nvim_set_keymap("i", "<cr>", "v:lua.cmp_npairs_cr()", {expr = true, noremap = true})
 
 -- automatically source tmux.conf after saving
 -- TODO: add one for all zsh files
 vim.cmd([[augroup tmux_save | au!
     autocmd BufWritePost tmux.conf !tmux source-file $XDG_CONFIG_HOME/tmux/tmux.conf
 augroup end]])
-
--- vimwiki config
---vim.api.nvim_exec([[
---let g:vimwiki_list = [{'path': '~/vimwiki/', 'syntax': 'markdown'}]]],
---false)
