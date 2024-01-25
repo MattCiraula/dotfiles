@@ -24,7 +24,8 @@ require("lazy").setup({
     "tpope/vim-fugitive",
     { 
         "TimUntersberger/neogit",
-        dependencies = {"nvim-lua/plenary.nvim"}
+        dependencies = {"nvim-lua/plenary.nvim"},
+        config = true
     },
     --"junegunn/fzf.vim",
     {
